@@ -26,7 +26,7 @@ export default class Game {
     setInterval(this.update.bind(this), 1000 / FRAMES_PER_SECOND);
   }
 
-  addPlayer(socket: SafeSocket, username: string): { id: string; color: string } {
+  addPlayer(socket: SafeSocket, username: string) {
     this.sockets[socket.id] = socket;
     const color = '#' + ((Math.random() * 0xffffff) << 0).toString(16);
     const [x, y] = [
@@ -34,7 +34,7 @@ export default class Game {
       (Math.random() * (0.8 - 0.2) + 0.2) * Constants.MAP_SIZE,
     ];
     this.players[socket.id] = new Player(socket.id, username, color, x, y);
-    return { id: socket.id, color };
+    socket.safeEmit('server-welcome', { id: socket.id, color, backgroundImage: this.canvas.toDataURL() });
   }
 
   removePlayer(socket: SafeSocket) {
@@ -59,6 +59,7 @@ export default class Game {
     img.onload = () => {
       this.canvasCtx.drawImage(img, 0, 0);
       // Immediately broadcast new background to all clients
+      // TODO (JBatch): Swap to broadcasting to a room instead of the whole server later
       socket.safeBroadcast('server-update-background', { backgroundImage: this.canvas.toDataURL() });
     };
     img.onerror = (err) => {

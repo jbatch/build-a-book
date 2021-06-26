@@ -13,7 +13,8 @@ type ClientDraw = {
 type ServerWelcome = {
   id: string;
   color: string;
-}
+  backgroundImage: string; // Data URL of starting image
+};
 type ServerUpdateCursors = {
   t: number;
   serverFps: number;
@@ -21,7 +22,7 @@ type ServerUpdateCursors = {
 };
 type ServerUpdateBackground = {
   backgroundImage: string; // Data URL of the new background for clients
-}
+};
 
 type SocketEvents = {
   // Sent by client

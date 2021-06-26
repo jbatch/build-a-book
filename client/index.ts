@@ -18,11 +18,12 @@ function init() {
     processCursorsUpdate(serverUpdateCursors.cursors);
   });
   safeOn('server-update-background', (serverUpdateBackground) => {
-    processBackgroundUpdate(serverUpdateBackground.backgroundImage)
+    processBackgroundUpdate(serverUpdateBackground.backgroundImage);
   });
   safeOn('server-welcome', (serverWelcome) => {
-    console.log('Server Welcome: ', {serverWelcome});
-    (window as any).player = { id: serverWelcome.id, color: serverWelcome.color }
+    console.log('Server Welcome: ', { serverWelcome });
+    (window as any).player = { id: serverWelcome.id, color: serverWelcome.color };
+    processBackgroundUpdate(serverWelcome.backgroundImage);
   });
 }
 

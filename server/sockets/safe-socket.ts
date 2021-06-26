@@ -13,7 +13,6 @@ export type SafeSocket = Socket & {
 
 export function getSafeSocket(client: Socket, server: Server): SafeSocket {
   function safeBroadcast<Event extends keyof SocketEvents>(event: Event, payload?: SocketEvents[Event]): void {
-    // client.broadcast.emit(event, payload);
     server.emit(event, payload);
   }
   function safeEmit<Event extends keyof SocketEvents>(event: Event, payload?: SocketEvents[Event]): void {

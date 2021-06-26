@@ -24,8 +24,7 @@ export function configureSockets(appServer: http.Server, game: Game) {
       logger.info(`${client.id} (${username}) joining game`);
       client.username = username;
       // Put player in game.
-      const {id, color} = game.addPlayer(safeSocket, username);
-      safeSocket.safeEmit('server-welcome', {id, color})
+      game.addPlayer(safeSocket, username);
     }
 
     function handleClientDisconnect() {
