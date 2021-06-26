@@ -20,7 +20,7 @@ function onMouseUp() {
 }
 
 function onMouseMove(e: MouseEvent) {
-  safeEmit('input', { startX: mouseX, startY: mouseY, endX: e.offsetX, endY: e.offsetY, mouseDown: mouseDown });
+  // safeEmit('input', { startX: mouseX, startY: mouseY, endX: e.offsetX, endY: e.offsetY, mouseDown: mouseDown });
   mouseX = e.offsetX;
   mouseY = e.offsetY;
 }
