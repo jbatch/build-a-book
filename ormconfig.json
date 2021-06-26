@@ -1,0 +1,15 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "book",
+  "password": "password",
+  "database": "book",
+  "entities": ["server/entity/*.ts"],
+  "migrations": ["server/migration/*.ts"],
+  "charset": "utf8mb4_unicode_ci",
+  "logging": false,
+  "cli": {
+    "migrationsDir": "server/migration"
+  }
+}
