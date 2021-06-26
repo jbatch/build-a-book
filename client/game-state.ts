@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import { Image } from 'canvas';
+
+>>>>>>> Clean up
 export type GameState = {
   cursors: Array<any>;
   background: HTMLImageElement;

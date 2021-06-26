@@ -39,6 +39,7 @@ function drawAll() {
 }
 
 function drawBackground(gameState: GameState) {
+  if (!gameState.background) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(gameState.background as any, 0, 0);
 }
@@ -46,9 +47,9 @@ function drawBackground(gameState: GameState) {
 function drawCursors(gameState: GameState) {
   gameState.cursors.forEach((c) => {
     if (c.username === (window as any).playerName) {
-      ctx.rect(c.x, c.y, 10, 10);
+      ctx.rect(c.x - 5, c.y - 5, 10, 10);
     } else {
-      ctx.rect(c.x, c.y, 10, 10);
+      ctx.rect(c.x - 5, c.y - 5, 10, 10);
     }
   });
 }
@@ -65,7 +66,6 @@ function getPlayerCanvas() {
 }
 
 function startRenderInterval() {
-  console.log('starting');
   requestAnimationFrame(drawAll);
 }
 
