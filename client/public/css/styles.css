@@ -1,0 +1,9 @@
+html, body, .container {
+  height: 100%;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  margin-top: 4em;
+}
