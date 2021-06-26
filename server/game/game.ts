@@ -57,6 +57,7 @@ export default class Game {
 
     // Remove all players that died and send updated state to all players
     const cursors = Object.entries(this.players).map(([id, player]) => player.serializeForUpdate());
+    // console.log('sending', {players: this.players})
     Object.entries(this.players).forEach(([id, player]) => {
       const socket = this.sockets[id];
       if (socket) {

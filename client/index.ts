@@ -6,9 +6,13 @@ const socket = initialiseSocket();
 function init() {
   initCanvas();
 
-  socket.on('connect', () => {});
+  socket.on('connect', () => {
+    safeEmit('join', { username: 'foo' });
+  });
   safeOn('disconnect', () => {});
-  safeOn('game-state', (gameState) => {});
+  safeOn('game-state', (gameState) => {
+    console.log({ gameState });
+  });
   safeOn('game-over', () => {});
 }
 
