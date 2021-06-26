@@ -2,17 +2,22 @@ import pino from 'pino';
 import Player from './player';
 import { SafeSocket } from '../sockets/safe-socket';
 import Constants from '../../shared/constants';
+import { createCanvas, Canvas, CanvasRenderingContext2D } from 'canvas';
 
 const FRAMES_PER_SECOND = 60; // 60;
 
 const logger = pino();
 
 export default class Game {
+  canvas: Canvas;
+  canvaCtx: CanvasRenderingContext2D;
   sockets: { [id: string]: SafeSocket };
   players: { [id: string]: Player };
   lastUpdatedTime: number;
   shouldSendUpdate: boolean;
   constructor() {
+    this.canvas = createCanvas(800, 450);
+    this.canvaCtx = this.canvas.getContext('2d');
     this.sockets = {};
     this.players = {};
     this.lastUpdatedTime = Date.now();
@@ -65,6 +70,7 @@ export default class Game {
           t: Date.now(),
           serverFps: 1 / dt,
           cursors,
+          canvasBuffer: this.canvas.toBuffer(),
         });
       }
     });

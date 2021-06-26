@@ -9,7 +9,7 @@ function initInputHandlers() {
 function onMouseMove(e: MouseEvent) {
   const x = e.offsetX;
   const y = e.offsetY;
-  console.log({ x, y });
+  // console.log({ x, y });
   safeEmit('input', { x, y });
 }
 
