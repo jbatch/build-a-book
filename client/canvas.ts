@@ -1,6 +1,6 @@
 import { debounce } from 'throttle-debounce';
 
-import { getGameState } from './game-state';
+import { getGameState, processGameStateUpdate } from './game-state';
 
 const FPS = 60;
 const height = 450;
@@ -30,25 +30,24 @@ function drawAll() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  drawBuffer(gameState);
+  // drawBuffer(gameState);
   drawCursors(gameState);
   ctx.stroke();
 }
 function drawBuffer(gameState: GameStateMessage) {
-  const buffer = gameState.canvasBuffer;
-  if (!gameState.canvasBuffer.length) return;
-  console.log('buffer', { buffer: buffer.length });
-  var array = new Uint8ClampedArray(buffer);
-  var imageData = new ImageData(array, canvas.width, canvas.height);
+  const array = gameState.canvasBuffer;
+  // console.log({array, arrayLength: array.length, divFour: array.length/4})
+  var imageData = new ImageData(canvas.width, canvas.height);
+  imageData.data.set(array);
 
   ctx.putImageData(imageData, 0, 0);
 }
 
 function drawCursors(gameState: GameStateMessage) {
   gameState.cursors.forEach((c) => {
+    // console.log('cursor', c)
     ctx.rect(c.x, c.y, 10, 10);
   });
-  console.log(gameState?.cursors);
 }
 
 function getCanvas() {

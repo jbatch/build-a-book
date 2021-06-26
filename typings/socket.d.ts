@@ -4,13 +4,14 @@ type GameStateMessage = {
   t: number;
   serverFps: number;
   cursors: Array<PlayerState>;
-  canvasBuffer: Buffer;
+  canvasBuffer: Uint8ClampedArray;
 };
 type InputMessage = {
   startX: number;
   startY: number;
   endX: number;
   endY: number;
+  mouseDown: boolean;
 };
 type GameOverMessage = {};
 

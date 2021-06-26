@@ -47,13 +47,13 @@ export default class Game {
       player.y = endY;
     }
 
-    this.canvasCtx.beginPath();
-    this.canvasCtx.moveTo(startX, startY);
-    this.canvasCtx.lineTo(endX, endY);
-    this.canvasCtx.strokeStyle = player.color;
-    this.canvasCtx.lineWidth = 5;
-    this.canvasCtx.lineCap = 'round';
-    this.canvasCtx.stroke();
+    // this.canvasCtx.beginPath();
+    // this.canvasCtx.moveTo(startX, startY);
+    // this.canvasCtx.lineTo(endX, endY);
+    // this.canvasCtx.strokeStyle = player.color;
+    // this.canvasCtx.lineWidth = 5;
+    // this.canvasCtx.lineCap = 'round';
+    // this.canvasCtx.stroke();
   }
 
   update() {
@@ -77,7 +77,8 @@ export default class Game {
           t: Date.now(),
           serverFps: 1 / dt,
           cursors,
-          canvasBuffer: this.canvas.toBuffer(),
+          // canvasBuffer: new Uint8ClampedArray(this.canvas.toBuffer()),
+          canvasBuffer: new Uint8ClampedArray([]),
         });
       }
     });
