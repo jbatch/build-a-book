@@ -2,7 +2,7 @@ import pino from 'pino';
 import Player from './player';
 import { SafeSocket } from '../sockets/safe-socket';
 import Constants from '../../shared/constants';
-import { createCanvas, Canvas, CanvasRenderingContext2D } from 'canvas';
+import { createCanvas, Canvas, CanvasRenderingContext2D, Image } from 'canvas';
 
 const FRAMES_PER_SECOND = 60; // 60;
 
@@ -87,7 +87,7 @@ export default class Game {
           serverFps: 1 / dt,
           cursors,
           // canvasBuffer: new Uint8ClampedArray(this.canvas.toBuffer()),
-          canvasBuffer: this.canvas.toDataURL()
+          canvasBuffer: this.canvas.toDataURL(),
         });
       }
     });
