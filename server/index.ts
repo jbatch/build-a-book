@@ -16,10 +16,6 @@ async function main() {
   // Create single instance of game for all players to use
   const game = new Game();
 
-  app.use((req, res, next) => {
-    logger.info('HERE');
-    next();
-  });
   // Initalize socketIO
   configureSockets(server, game);
 

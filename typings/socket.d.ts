@@ -27,7 +27,7 @@ type ServerUpdateBackground = {
 type SocketEvents = {
   // Sent by client
   'client-join': ClientJoin;
-  'client-disconnect': ClientDisconnect;
+  disconnect: ClientDisconnect;
   'client-location': ClientLocation;
   'client-draw': ClientDraw;
   // Sent by Server

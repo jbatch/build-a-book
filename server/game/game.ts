@@ -23,7 +23,7 @@ export default class Game {
     this.players = {};
     this.lastUpdatedTime = Date.now();
     this.shouldSendUpdate = false;
-    setInterval(this.update.bind(this), 1000 / FRAMES_PER_SECOND);
+    // setInterval(this.update.bind(this), 1000 / FRAMES_PER_SECOND);
   }
 
   addPlayer(socket: SafeSocket, username: string) {

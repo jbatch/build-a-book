@@ -16,7 +16,7 @@ export function configureSockets(appServer: http.Server, game: Game) {
 
     // Setup event listeners for client
     safeSocket.safeOn('client-join', handleClientJoin);
-    safeSocket.safeOn('client-disconnect', handleClientDisconnect);
+    safeSocket.safeOn('disconnect', handleClientDisconnect);
     safeSocket.safeOn('client-location', handleClientLocation);
     safeSocket.safeOn('client-draw', handleClientDraw);
 
