@@ -10,14 +10,14 @@ const logger = pino();
 
 export default class Game {
   canvas: Canvas;
-  canvaCtx: CanvasRenderingContext2D;
+  canvasCtx: CanvasRenderingContext2D;
   sockets: { [id: string]: SafeSocket };
   players: { [id: string]: Player };
   lastUpdatedTime: number;
   shouldSendUpdate: boolean;
   constructor() {
     this.canvas = createCanvas(800, 450);
-    this.canvaCtx = this.canvas.getContext('2d');
+    this.canvasCtx = this.canvas.getContext('2d');
     this.sockets = {};
     this.players = {};
     this.lastUpdatedTime = Date.now();
@@ -32,7 +32,7 @@ export default class Game {
       (Math.random() * (0.8 - 0.2) + 0.2) * Constants.MAP_SIZE,
       (Math.random() * (0.8 - 0.2) + 0.2) * Constants.MAP_SIZE,
     ];
-    this.players[socket.id] = new Player(socket.id, color, username, x, y);
+    this.players[socket.id] = new Player(socket.id, username, color, x, y);
   }
 
   removePlayer(socket: SafeSocket) {
@@ -45,8 +45,15 @@ export default class Game {
     if (player) {
       player.x = endX;
       player.y = endY;
-      // draw a line - drawLine(startX, endX, startY, endY)
     }
+
+    this.canvasCtx.beginPath();
+    this.canvasCtx.moveTo(startX, startY);
+    this.canvasCtx.lineTo(endX, endY);
+    this.canvasCtx.strokeStyle = player.color;
+    this.canvasCtx.lineWidth = 5;
+    this.canvasCtx.lineCap = 'round';
+    this.canvasCtx.stroke();
   }
 
   update() {
@@ -56,14 +63,13 @@ export default class Game {
     const lastUpdate = this.lastUpdatedTime;
     this.lastUpdatedTime = now;
 
-    // Update all playerz
+    // Update all players
     Object.values(this.players).forEach((player) => {
       player.update(dt);
     });
 
     // Remove all players that died and send updated state to all players
     const cursors = Object.entries(this.players).map(([id, player]) => player.serializeForUpdate());
-    // console.log('sending', {players: this.players})
     Object.entries(this.players).forEach(([id, player]) => {
       const socket = this.sockets[id];
       if (socket) {
