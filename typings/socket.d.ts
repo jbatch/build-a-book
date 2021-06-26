@@ -5,7 +5,10 @@ type GameStateMessage = {
   serverFps: number;
   cursors: Array<PlayerState>;
 };
-type InputMessage = {};
+type InputMessage = {
+  x: number;
+  y: number;
+};
 type GameOverMessage = {};
 
 type SocketEvents = {

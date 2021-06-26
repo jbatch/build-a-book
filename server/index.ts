@@ -16,10 +16,13 @@ async function main() {
   // Create single instance of game for all players to use
   const game = new Game();
 
+  app.use((req, res, next) => {
+    logger.info('HERE');
+    next();
+  });
   // Initalize socketIO
   configureSockets(server, game);
 
-  // If not matched anything yet server from dist
   if ((process.env.NODE_ENV = 'production')) {
     app.use(express.static(path.join(__dirname, '..', 'client')));
   }

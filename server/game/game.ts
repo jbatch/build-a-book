@@ -4,7 +4,6 @@ import { SafeSocket } from '../sockets/safe-socket';
 import Constants from '../../shared/constants';
 
 const FRAMES_PER_SECOND = 60; // 60;
-const NUM_COLLECTABLES = 20;
 
 const logger = pino();
 
@@ -36,7 +35,13 @@ export default class Game {
     delete this.players[socket.id];
   }
 
-  handleInput(socket: SafeSocket, {}: InputMessage) {}
+  handleInput(socket: SafeSocket, { x, y }: InputMessage) {
+    const player = this.players[socket.id];
+    if (player) {
+      player.x = x;
+      player.y = y;
+    }
+  }
 
   update() {
     // Calculate time elapsed

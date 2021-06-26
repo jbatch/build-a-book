@@ -2,13 +2,13 @@ import socketIo from 'socket.io';
 import http from 'http';
 import pino from 'pino';
 import Game from '../game/game';
-import { Socket } from 'socket.io';
 import { getSafeSocket } from './safe-socket';
 
 const logger = pino();
 
 export function configureSockets(appServer: http.Server, game: Game) {
   const server = socketIo(appServer, { pingTimeout: 2000, pingInterval: 10000 });
+  logger.info('Started socket.io server on');
 
   server.on('connect', (client: socketIo.Socket & { username: string }) => {
     logger.info('Client connected');
