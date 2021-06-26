@@ -4,7 +4,7 @@ import { SafeSocket } from '../sockets/safe-socket';
 import Constants from '../../shared/constants';
 import { createCanvas, Canvas, CanvasRenderingContext2D, Image } from 'canvas';
 
-const FRAMES_PER_SECOND = 60; // 60;
+const FRAMES_PER_SECOND = 20; // 60;
 
 const logger = pino();
 
@@ -18,9 +18,6 @@ export default class Game {
   constructor() {
     this.canvas = createCanvas(800, 450);
     this.canvasCtx = this.canvas.getContext('2d');
-
-    this.canvasCtx.rect(100, 100, 100, 100);
-    this.canvasCtx.stroke();
 
     this.sockets = {};
     this.players = {};
@@ -79,6 +76,7 @@ export default class Game {
 
     // Remove all players that died and send updated state to all players
     const cursors = Object.entries(this.players).map(([id, player]) => player.serializeForUpdate());
+    const imageData = this.canvas.toDataURL();
     Object.entries(this.players).forEach(([id, player]) => {
       const socket = this.sockets[id];
       if (socket) {
@@ -86,8 +84,7 @@ export default class Game {
           t: Date.now(),
           serverFps: 1 / dt,
           cursors,
-          // canvasBuffer: new Uint8ClampedArray(this.canvas.toBuffer()),
-          canvasBuffer: this.canvas.toDataURL(),
+          canvasBuffer: imageData,
         });
       }
     });
