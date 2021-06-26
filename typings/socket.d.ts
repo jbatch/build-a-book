@@ -13,6 +13,9 @@ type InputMessage = {
   endY: number;
   mouseDown: boolean;
 };
+type DrawImageMessage = {
+  imageData: string; // Data URL of image to append to Canvas
+};
 type GameOverMessage = {};
 
 type SocketEvents = {
@@ -20,5 +23,6 @@ type SocketEvents = {
   disconnect: DisconnectMessage;
   'game-state': GameStateMessage;
   input: InputMessage;
+  'draw-image': DrawImageMessage;
   'game-over': GameOverMessage;
 };

@@ -18,6 +18,7 @@ export function configureSockets(appServer: http.Server, game: Game) {
     safeSocket.safeOn('join', handleJoin);
     safeSocket.safeOn('disconnect', handleDisconnect);
     safeSocket.safeOn('input', handleInput);
+    safeSocket.safeOn('draw-image', handleDrawImage);
 
     function handleJoin({ username }: JoinMessage) {
       logger.info(`${client.id} (${username}) joining game`);
@@ -34,6 +35,10 @@ export function configureSockets(appServer: http.Server, game: Game) {
 
     function handleInput(input: InputMessage) {
       game.handleInput(safeSocket, input);
+    }
+
+    function handleDrawImage(input: DrawImageMessage) {
+      game.handleDrawImage(safeSocket, input);
     }
   });
 }

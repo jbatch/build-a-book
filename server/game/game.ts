@@ -44,20 +44,25 @@ export default class Game {
     delete this.players[socket.id];
   }
 
-  handleInput(socket: SafeSocket, { startX, startY, endX, endY }: InputMessage) {
+  handleInput(socket: SafeSocket, { endX, endY }: InputMessage) {
     const player = this.players[socket.id];
     if (player) {
       player.x = endX;
       player.y = endY;
     }
+  }
 
-    // this.canvasCtx.beginPath();
-    // this.canvasCtx.moveTo(startX, startY);
-    // this.canvasCtx.lineTo(endX, endY);
-    // this.canvasCtx.strokeStyle = player.color;
-    // this.canvasCtx.lineWidth = 5;
-    // this.canvasCtx.lineCap = 'round';
-    // this.canvasCtx.stroke();
+  handleDrawImage(socket: SafeSocket, drawImageMessage: DrawImageMessage) {
+    const player = this.players[socket.id];
+    if (!player) {
+      return;
+    }
+    const img = new Image();
+    img.onload = () => this.canvasCtx.drawImage(img, 0, 0);
+    img.onerror = (err) => {
+      throw err;
+    };
+    img.src = drawImageMessage.imageData;
   }
 
   update() {
