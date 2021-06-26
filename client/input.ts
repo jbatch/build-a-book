@@ -1,6 +1,6 @@
 import { debounce } from 'throttle-debounce';
 import { clearPlayerCanvas, drawPlayer, getCanvas } from './canvas';
-import { sendPlayerCanvas } from './network';
+import { sendPlayerCanvas, sendPlayerCursor } from './network';
 import { safeEmit } from './sockets';
 
 let mouseX: number;
@@ -9,7 +9,7 @@ let mouseDown: boolean;
 
 function initInputHandlers() {
   const canvas = getCanvas();
-  canvas.addEventListener('mousemove', debounce(500, onMouseMove));
+  canvas.addEventListener('mousemove', onMouseMove);
   canvas.addEventListener('mousedown', onMouseDown);
   canvas.addEventListener('mouseup', onMouseUp);
 }
@@ -28,7 +28,7 @@ function onMouseMove(e: MouseEvent) {
   const startY = mouseY;
   const endX = e.offsetX;
   const endY = e.offsetY;
-  safeEmit('client-location', { endX, endY });
+  // sendPlayerCursor(endX, endY);
   if (mouseDown) {
     drawPlayer(startX, startY, endX, endY);
   }

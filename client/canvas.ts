@@ -49,16 +49,19 @@ function drawBackground(gameState: GameState) {
 }
 
 function drawCursors(gameState: GameState) {
-  gameState.cursors.forEach((c) => {
-    // if it's the current player then render then where the mouse actually is
-    // to make it feel less laggy
-    if (c.username === (window as any).playerName) {
-      const { x, y } = getMousePos();
-      ctx.strokeRect(x - 5, y - 5, 10, 10);
-    } else {
-      ctx.strokeRect(c.x - 5, c.y - 5, 10, 10);
-    }
-  });
+  // just draw the current players cursor
+  const { x, y } = getMousePos();
+  ctx.strokeRect(x - 5, y - 5, 10, 10);
+  // gameState.cursors.forEach((c) => {
+  //   // if it's the current player then render then where the mouse actually is
+  //   // to make it feel less laggy
+  //   if (c.username === (window as any).playerName) {
+  //     const { x, y } = getMousePos();
+  //     ctx.strokeRect(x - 5, y - 5, 10, 10);
+  //   } else {
+  //     ctx.strokeRect(c.x - 5, c.y - 5, 10, 10);
+  //   }
+  // });
 }
 
 function clearPlayerCanvas() {
