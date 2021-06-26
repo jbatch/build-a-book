@@ -15,6 +15,8 @@ function initialiseSocket() {
   console.log('Secure?', process.env.NODE_ENV, useSecureConnection);
   socket = socketIO.connect(`${useSecureConnection ? 'wss' : 'ws'}://${window.location.host}`, {
     secure: useSecureConnection,
+    // transports: ['websocket'],
+    // upgrade: false
   });
   socket.on('connect', () => {
     console.log('Connected to server~');

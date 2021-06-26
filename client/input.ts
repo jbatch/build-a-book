@@ -1,3 +1,4 @@
+import { debounce } from 'throttle-debounce';
 import { clearPlayerCanvas, drawPlayer, getCanvas } from './canvas';
 import { sendPlayerCanvas } from './network';
 import { safeEmit } from './sockets';
@@ -8,7 +9,7 @@ let mouseDown: boolean;
 
 function initInputHandlers() {
   const canvas = getCanvas();
-  canvas.addEventListener('mousemove', onMouseMove);
+  canvas.addEventListener('mousemove', debounce(500, onMouseMove));
   canvas.addEventListener('mousedown', onMouseDown);
   canvas.addEventListener('mouseup', onMouseUp);
 }
