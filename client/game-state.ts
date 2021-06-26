@@ -1,0 +1,3 @@
+function getGameState() {}
+
+export { getGameState };
