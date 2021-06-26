@@ -40,9 +40,8 @@ function drawAll() {
 
 function drawBackground(gameState: GameState) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(gameState.background, 0, 0);
+  ctx.drawImage(gameState.background as any, 0, 0);
 }
-
 
 function drawCursors(gameState: GameState) {
   gameState.cursors.forEach((c) => {

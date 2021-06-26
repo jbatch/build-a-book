@@ -1,11 +1,9 @@
-import { Image } from "canvas";
-
 export type GameState = {
-  cursors: Array<any>,
+  cursors: Array<any>;
   background: HTMLImageElement;
   oldBackgroundString: string;
   dirty: boolean;
-}
+};
 let gameState: GameState = {
   cursors: [],
   background: null,
@@ -19,12 +17,12 @@ function getGameState() {
 
 function processBackgroundUpdate(backgroundStr: string) {
   if (backgroundStr !== gameState.oldBackgroundString) {
-    const img = new HTMLImageElement();
+    const img = new Image();
     img.onload = () => {
       gameState.background = img;
       gameState.dirty = true;
       gameState.oldBackgroundString = backgroundStr;
-    }
+    };
     img.src = backgroundStr;
   }
 }

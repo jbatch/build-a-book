@@ -4,7 +4,7 @@ import { SafeSocket } from '../sockets/safe-socket';
 import Constants from '../../shared/constants';
 import { createCanvas, Canvas, CanvasRenderingContext2D, Image } from 'canvas';
 
-const FRAMES_PER_SECOND = 20; // 60;
+const FRAMES_PER_SECOND = 1; // 60;
 
 const logger = pino();
 
