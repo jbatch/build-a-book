@@ -1,6 +1,6 @@
 import { debounce } from 'throttle-debounce';
 
-import { getGameState, processGameStateUpdate } from './game-state';
+import { getGameState, getPlayerColor, processGameStateUpdate } from './game-state';
 
 const FPS = 60;
 const height = 450;
@@ -19,7 +19,6 @@ function initCanvas() {
   playerCanvas = document.getElementById('player-canvas') as HTMLCanvasElement;
   playerCtx = playerCanvas.getContext('2d');
 
-
   resizeCanvas();
   window.addEventListener('resize', debounce(40, resizeCanvas));
 }
@@ -29,32 +28,35 @@ function resizeCanvas() {
   canvas.width = width;
   playerCanvas.height = height;
   playerCanvas.width = width;
-  drawAll();
+  // drawAll();
 }
 
 function drawAll() {
   const gameState = getGameState();
-  if (!gameState) return;
+  if (!gameState) return requestAnimationFrame(drawAll);
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
   drawBuffer(gameState);
   drawCursors(gameState);
-  
-  ctx.stroke();
 }
+
 function drawBuffer(gameState: GameStateMessage) {
   const canvasBuffer = gameState.canvasBuffer;
   const img = new Image();
   img.onload = () => {
-    ctx.drawImage(img, 10, 10);
-  }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+    requestAnimationFrame(drawAll);
+  };
   img.src = canvasBuffer;
 }
 
 function drawCursors(gameState: GameStateMessage) {
   gameState.cursors.forEach((c) => {
-    ctx.rect(c.x, c.y, 10, 10);
+    if (c.username === (window as any).playerName) {
+      ctx.rect(c.x, c.y, 10, 10);
+    } else {
+      ctx.rect(c.x, c.y, 10, 10);
+    }
   });
 }
 
@@ -70,22 +72,30 @@ function getPlayerCanvas() {
 }
 
 function startRenderInterval() {
-  renderInterval = setInterval(drawAll, 1000 / FPS);
+  console.log('starting');
+  requestAnimationFrame(drawAll);
 }
 
 function stopRenderInterval() {
   clearInterval(renderInterval);
 }
 
-function drawPlayer(startX: number, startY: number, endX: number, endY: number ) {
+function drawPlayer(startX: number, startY: number, endX: number, endY: number) {
   playerCtx.beginPath();
   playerCtx.moveTo(startX, startY);
   playerCtx.lineTo(endX, endY);
-  playerCtx.strokeStyle = 'green';
+  playerCtx.strokeStyle = getPlayerColor();
   playerCtx.lineWidth = 5;
   playerCtx.lineCap = 'round';
   playerCtx.stroke();
 }
 
-export { initCanvas, getCanvas,getPlayerCanvas, drawPlayer,clearPlayerCanvas, startRenderInterval, stopRenderInterval };
-
+export {
+  initCanvas,
+  getCanvas,
+  getPlayerCanvas,
+  drawPlayer,
+  clearPlayerCanvas,
+  startRenderInterval,
+  stopRenderInterval,
+};

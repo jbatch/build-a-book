@@ -11,7 +11,10 @@ function init() {
   startRenderInterval();
 
   socket.on('connect', () => {
-    safeEmit('join', { username: 'foo' });
+    const playerName = 'Player ' + Math.floor(Math.random() * 10);
+
+    (window as any).playerName = playerName;
+    safeEmit('join', { username: playerName });
   });
   safeOn('disconnect', () => {});
   safeOn('game-state', (gameState) => {
