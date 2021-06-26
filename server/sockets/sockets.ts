@@ -15,29 +15,30 @@ export function configureSockets(appServer: http.Server, game: Game) {
     const safeSocket = getSafeSocket(client, server);
 
     // Setup event listeners for client
-    safeSocket.safeOn('join', handleJoin);
-    safeSocket.safeOn('disconnect', handleDisconnect);
-    safeSocket.safeOn('input', handleInput);
-    safeSocket.safeOn('draw-image', handleDrawImage);
+    safeSocket.safeOn('client-join', handleClientJoin);
+    safeSocket.safeOn('client-disconnect', handleClientDisconnect);
+    safeSocket.safeOn('client-location', handleClientLocation);
+    safeSocket.safeOn('client-draw', handleClientDraw);
 
-    function handleJoin({ username }: JoinMessage) {
+    function handleClientJoin({ username }: ClientJoin) {
       logger.info(`${client.id} (${username}) joining game`);
       client.username = username;
       // Put player in game.
-      game.addPlayer(safeSocket, username);
+      const {id, color} = game.addPlayer(safeSocket, username);
+      safeSocket.safeEmit('server-welcome', {id, color})
     }
 
-    function handleDisconnect() {
+    function handleClientDisconnect() {
       logger.info(`${client.id} (${client.username || 'unknown'}) disconnected`);
       // Remove player from game.
       game.removePlayer(safeSocket);
     }
 
-    function handleInput(input: InputMessage) {
+    function handleClientLocation(input: ClientLocation) {
       game.handleInput(safeSocket, input);
     }
 
-    function handleDrawImage(input: DrawImageMessage) {
+    function handleClientDraw(input: ClientDraw) {
       game.handleDrawImage(safeSocket, input);
     }
   });

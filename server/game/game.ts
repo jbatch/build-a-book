@@ -26,7 +26,7 @@ export default class Game {
     setInterval(this.update.bind(this), 1000 / FRAMES_PER_SECOND);
   }
 
-  addPlayer(socket: SafeSocket, username: string) {
+  addPlayer(socket: SafeSocket, username: string): { id: string; color: string } {
     this.sockets[socket.id] = socket;
     const color = '#' + ((Math.random() * 0xffffff) << 0).toString(16);
     const [x, y] = [
@@ -34,6 +34,7 @@ export default class Game {
       (Math.random() * (0.8 - 0.2) + 0.2) * Constants.MAP_SIZE,
     ];
     this.players[socket.id] = new Player(socket.id, username, color, x, y);
+    return { id: socket.id, color };
   }
 
   removePlayer(socket: SafeSocket) {
@@ -41,7 +42,7 @@ export default class Game {
     delete this.players[socket.id];
   }
 
-  handleInput(socket: SafeSocket, { endX, endY }: InputMessage) {
+  handleInput(socket: SafeSocket, { endX, endY }: ClientLocation) {
     const player = this.players[socket.id];
     if (player) {
       player.x = endX;
@@ -49,17 +50,21 @@ export default class Game {
     }
   }
 
-  handleDrawImage(socket: SafeSocket, drawImageMessage: DrawImageMessage) {
+  handleDrawImage(socket: SafeSocket, { imageData }: ClientDraw) {
     const player = this.players[socket.id];
     if (!player) {
       return;
     }
     const img = new Image();
-    img.onload = () => this.canvasCtx.drawImage(img, 0, 0);
+    img.onload = () => {
+      this.canvasCtx.drawImage(img, 0, 0);
+      // Immediately broadcast new background to all clients
+      socket.safeBroadcast('server-update-background', { backgroundImage: this.canvas.toDataURL() });
+    };
     img.onerror = (err) => {
       throw err;
     };
-    img.src = drawImageMessage.imageData;
+    img.src = imageData;
   }
 
   update() {
@@ -80,11 +85,10 @@ export default class Game {
     Object.entries(this.players).forEach(([id, player]) => {
       const socket = this.sockets[id];
       if (socket) {
-        socket.safeEmit('game-state', {
+        socket.safeEmit('server-update-cursors', {
           t: Date.now(),
           serverFps: 1 / dt,
           cursors,
-          canvasBuffer: imageData,
         });
       }
     });
