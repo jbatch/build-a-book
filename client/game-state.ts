@@ -1,5 +1,5 @@
 export type GameState = {
-  cursors: Array<any>;
+  cursors: Array<PlayerState>;
   background: HTMLImageElement;
   oldBackgroundString: string;
   dirty: boolean;

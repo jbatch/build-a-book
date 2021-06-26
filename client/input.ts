@@ -27,7 +27,7 @@ function onMouseMove(e: MouseEvent) {
   const startY = mouseY;
   const endX = e.offsetX;
   const endY = e.offsetY;
-  // safeEmit('input', { endX, endY, mouseDown });
+  safeEmit('client-location', { endX, endY });
   if (mouseDown) {
     drawPlayer(startX, startY, endX, endY);
   }
@@ -35,4 +35,11 @@ function onMouseMove(e: MouseEvent) {
   mouseY = e.offsetY;
 }
 
-export { initInputHandlers };
+function getMousePos() {
+  return {
+    x: mouseX,
+    y: mouseY,
+  };
+}
+
+export { initInputHandlers, getMousePos };

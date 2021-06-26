@@ -1,6 +1,7 @@
 import { debounce } from 'throttle-debounce';
 
 import { GameState, getGameState } from './game-state';
+import { getMousePos } from './input';
 
 const FPS = 60;
 const height = 450;
@@ -34,6 +35,7 @@ function drawAll() {
   const gameState = getGameState();
   if (!gameState) return requestAnimationFrame(drawAll);
 
+  ctx.clearRect(0, 0, width, height);
   drawBackground(gameState);
   drawCursors(gameState);
 
@@ -48,10 +50,13 @@ function drawBackground(gameState: GameState) {
 
 function drawCursors(gameState: GameState) {
   gameState.cursors.forEach((c) => {
+    // if it's the current player then render then where the mouse actually is
+    // to make it feel less laggy
     if (c.username === (window as any).playerName) {
-      ctx.rect(c.x - 5, c.y - 5, 10, 10);
+      const { x, y } = getMousePos();
+      ctx.strokeRect(x - 5, y - 5, 10, 10);
     } else {
-      ctx.rect(c.x - 5, c.y - 5, 10, 10);
+      ctx.strokeRect(c.x - 5, c.y - 5, 10, 10);
     }
   });
 }
