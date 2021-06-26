@@ -24,6 +24,7 @@
     "db:migrations:show": "TS_NODE_FILES=true ts-node ./node_modules/.bin/typeorm migration:show",
     "db:migrations:generate": "TS_NODE_FILES=true ts-node ./node_modules/.bin/typeorm migration:generate -n",
     "db:migrations:run": "TS_NODE_FILES=true ts-node ./node_modules/.bin/typeorm migration:run",
+    "release:cut": "yarn version --no-git-tag-version --patch && PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git commit -am \"New release: $PACKAGE_VERSION\"",
     "release:pull": "VERSION=`echo $npm_package_version`; curl \"https://github.com/jbatch/build-a-book/releases/download/v$VERSION/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package/dist"
   },
   "dependencies": {
