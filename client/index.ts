@@ -1,7 +1,7 @@
 import { initialiseSocket, safeOn, safeEmit } from './sockets';
 import { initCanvas, getCanvas, startRenderInterval } from './canvas';
 import { initInputHandlers } from './input';
-import { processGameStateUpdate } from './game-state';
+import { processBackgroundUpdate, processCursorsUpdate } from './game-state';
 
 const socket = initialiseSocket();
 
@@ -11,18 +11,19 @@ function init() {
   startRenderInterval();
 
   socket.on('connect', () => {
-    const playerName = 'Player ' + Math.floor(Math.random() * 10);
-
-    (window as any).playerName = playerName;
-    safeEmit('join', { username: playerName });
+    const playerName = 'Player ' + Math.floor(Math.random() * 100);
+    safeEmit('client-join', { username: playerName });
   });
-  safeOn('disconnect', () => {});
-  safeOn('game-state', (gameState) => {
-    // console.log({ gameState });
-    // console.log({ gameState });
-    processGameStateUpdate(gameState);
+  safeOn('server-update-cursors', (serverUpdateCursors) => {
+    processCursorsUpdate(serverUpdateCursors.cursors);
   });
-  safeOn('game-over', () => {});
+  safeOn('server-update-background', (serverUpdateBackground) => {
+    processBackgroundUpdate(serverUpdateBackground.backgroundImage)
+  });
+  safeOn('server-welcome', (serverWelcome) => {
+    console.log('Server Welcome: ', {serverWelcome});
+    (window as any).player = { id: serverWelcome.id, color: serverWelcome.color }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', init);

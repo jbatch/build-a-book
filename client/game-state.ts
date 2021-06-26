@@ -1,18 +1,40 @@
-let gameState: GameStateMessage;
+import { Image } from "canvas";
 
-function getGameState(): GameStateMessage {
+export type GameState = {
+  cursors: Array<any>,
+  background: HTMLImageElement;
+  oldBackgroundString: string;
+  dirty: boolean;
+}
+let gameState: GameState = {
+  cursors: [],
+  background: null,
+  oldBackgroundString: '',
+  dirty: false,
+};
+
+function getGameState() {
   return gameState;
 }
 
-function processGameStateUpdate(newState: GameStateMessage) {
-  gameState = newState;
-  return gameState;
+function processBackgroundUpdate(backgroundStr: string) {
+  if (backgroundStr !== gameState.oldBackgroundString) {
+    const img = new HTMLImageElement();
+    img.onload = () => {
+      gameState.background = img;
+      gameState.dirty = true;
+      gameState.oldBackgroundString = backgroundStr;
+    }
+    img.src = backgroundStr;
+  }
 }
 
-function getPlayerColor() {
-  const gameState = getGameState();
-  const playerName = (window as any).playerName;
-  return gameState?.cursors.find((c) => c.username === playerName)?.color || 'red';
+function processCursorsUpdate(cursors: Array<any>) {
+  gameState.cursors = cursors;
 }
 
-export { getGameState, processGameStateUpdate, getPlayerColor };
+function setBackgroundDirty(dirty: boolean) {
+  gameState.dirty = dirty;
+}
+
+export { getGameState, processCursorsUpdate, processBackgroundUpdate };

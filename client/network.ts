@@ -4,7 +4,7 @@ import { safeEmit } from "./sockets";
 function sendPlayerCanvas() {
   const playerCanvas = getPlayerCanvas();
   const playerImgStr = playerCanvas.toDataURL();
-  safeEmit('draw-image', { imageData: playerImgStr})
+  safeEmit('client-draw', { imageData: playerImgStr})
 }
 
 export { sendPlayerCanvas }
