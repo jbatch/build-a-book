@@ -36,6 +36,8 @@ function drawAll() {
 
   drawBackground(gameState);
   drawCursors(gameState);
+
+  requestAnimationFrame(drawAll);
 }
 
 function drawBackground(gameState: GameState) {
