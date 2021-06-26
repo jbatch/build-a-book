@@ -15,7 +15,7 @@ function init() {
   });
   safeOn('disconnect', () => {});
   safeOn('game-state', (gameState) => {
-    console.log({ gameState });
+    // console.log({ gameState });
     // console.log({ gameState });
     processGameStateUpdate(gameState);
   });
