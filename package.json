@@ -1,12 +1,12 @@
 {
   "name": "build-a-book",
   "private": true,
-  "version": "1.0.3",
+  "version": "0.0.1",
   "main": "index.js",
   "files": [
     "dist"
   ],
-  "author": "Luke.Batchelor <batchelor.luke+git@gmail.com>",
+  "author": "Luke.Batchelor <batchelor.luke+git@gmail.com>, Josh Batchelor <>",
   "license": "MIT",
   "scripts": {
     "start": "node dist/index.js",
@@ -24,7 +24,7 @@
     "db:migrations:show": "TS_NODE_FILES=true ts-node ./node_modules/.bin/typeorm migration:show",
     "db:migrations:generate": "TS_NODE_FILES=true ts-node ./node_modules/.bin/typeorm migration:generate -n",
     "db:migrations:run": "TS_NODE_FILES=true ts-node ./node_modules/.bin/typeorm migration:run",
-    "release:pull": "VERSION=`echo $npm_package_version`; curl \"https://github.com/lukebatchelor/build-a-book/releases/download/v$VERSION/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package/dist"
+    "release:pull": "VERSION=`echo $npm_package_version`; curl \"https://github.com/jbatch/build-a-book/releases/download/v$VERSION/release.tgz\" -sL -o release.tgz; tar -zxvf release.tgz --strip-components=1 package/dist"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
