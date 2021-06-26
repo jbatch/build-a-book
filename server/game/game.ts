@@ -18,6 +18,10 @@ export default class Game {
   constructor() {
     this.canvas = createCanvas(800, 450);
     this.canvasCtx = this.canvas.getContext('2d');
+
+    this.canvasCtx.rect(100, 100, 100, 100);
+    this.canvasCtx.stroke();
+
     this.sockets = {};
     this.players = {};
     this.lastUpdatedTime = Date.now();
