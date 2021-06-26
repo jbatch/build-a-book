@@ -4,7 +4,7 @@ type GameStateMessage = {
   t: number;
   serverFps: number;
   cursors: Array<PlayerState>;
-  canvasBuffer: Uint8ClampedArray;
+  canvasBuffer: string;
 };
 type InputMessage = {
   startX: number;

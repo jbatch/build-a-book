@@ -1,4 +1,5 @@
-import { getCanvas } from './canvas';
+import { clearPlayerCanvas, drawPlayer, getCanvas } from './canvas';
+import { sendPlayerCanvas } from './network';
 import { safeEmit } from './sockets';
 
 let mouseX: number;
@@ -17,10 +18,19 @@ function onMouseDown() {
 }
 function onMouseUp() {
   mouseDown = false;
+  sendPlayerCanvas();
+  clearPlayerCanvas();
 }
 
 function onMouseMove(e: MouseEvent) {
-  // safeEmit('input', { startX: mouseX, startY: mouseY, endX: e.offsetX, endY: e.offsetY, mouseDown: mouseDown });
+  const startX = mouseX;
+  const startY = mouseY;
+  const endX = e.offsetX;
+  const endY = e.offsetY;
+  // safeEmit('input', { endX, endY, mouseDown });
+  if (mouseDown) {
+    drawPlayer(startX, startY, endX, endY);
+  }
   mouseX = e.offsetX;
   mouseY = e.offsetY;
 }

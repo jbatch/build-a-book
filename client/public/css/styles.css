@@ -5,11 +5,19 @@ body,
 }
 
 .main {
-  display: flex;
-  justify-content: center;
   margin-top: 4em;
 }
 
-#game-canvas {
+#game-canvas, #player-canvas {
   border: 1px solid black;
+}
+
+.canvas-container { 
+  position: relative;
+}
+
+.canvas-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

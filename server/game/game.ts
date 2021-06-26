@@ -87,7 +87,7 @@ export default class Game {
           serverFps: 1 / dt,
           cursors,
           // canvasBuffer: new Uint8ClampedArray(this.canvas.toBuffer()),
-          canvasBuffer: new Uint8ClampedArray([]),
+          canvasBuffer: this.canvas.toDataURL()
         });
       }
     });
