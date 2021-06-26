@@ -40,11 +40,12 @@ export default class Game {
     delete this.players[socket.id];
   }
 
-  handleInput(socket: SafeSocket, { x, y }: InputMessage) {
+  handleInput(socket: SafeSocket, { startX, startY, endX, endY }: InputMessage) {
     const player = this.players[socket.id];
     if (player) {
-      player.x = x;
-      player.y = y;
+      player.x = endX;
+      player.y = endY;
+      // draw a line - drawLine(startX, endX, startY, endY)
     }
   }
 

@@ -7,8 +7,10 @@ type GameStateMessage = {
   canvasBuffer: Buffer;
 };
 type InputMessage = {
-  x: number;
-  y: number;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
 };
 type GameOverMessage = {};
 
