@@ -71,6 +71,7 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
     }
 
     function handleClientCanvasReset() {
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleClientCanvasReset(safeSocket);
     }
   });
