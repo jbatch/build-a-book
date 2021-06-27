@@ -12,7 +12,7 @@ function init() {
   initInputHandlers();
   initDrawingTools();
   startRenderInterval();
-  showScreen(SCREENS.LOBBY);
+  showScreen(SCREENS.GAME);
   drawPlayersInLobby();
 
   socket.on('connect', () => {

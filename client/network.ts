@@ -12,6 +12,10 @@ export function sendCanvasResetMessage() {
   safeEmit('client-canvas-reset', {});
 }
 
+export function sendHostStartMessage() {
+  safeEmit('client-host-start');
+}
+
 function _sendPlayerCursor(endX: number, endY: number) {
   safeEmit('client-location', { endX, endY });
 }

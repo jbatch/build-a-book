@@ -1,4 +1,5 @@
 import { getGameState } from './game-state';
+import { sendHostStartMessage } from './network';
 
 export enum SCREENS {
   HOME,
@@ -11,6 +12,13 @@ const screens = {
   [SCREENS.LOBBY]: '#screen-lobby',
   [SCREENS.GAME]: '#screen-game',
 };
+
+export function initUi() {
+  // set up event handlers for button clicks, etc
+  const inviteBtn = document.getElementById('invite-btn');
+  const startBtn = document.getElementById('start-btn');
+  startBtn.addEventListener('click', sendHostStartMessage);
+}
 
 export function showScreen(screen: SCREENS) {
   const allScreenIds = Object.values(screens).join(',');
