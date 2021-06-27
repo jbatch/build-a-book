@@ -23,6 +23,8 @@ const screens = {
 export function initUi() {
   // set up event handlers for button clicks, etc
   const usernameInput = document.getElementById('username') as HTMLInputElement;
+  const promptInput = document.getElementById('prompt-input') as HTMLInputElement;
+
   const playBtn = document.getElementById('play-btn');
   const hostPrivateGameButton = document.getElementById('host-private-game-btn');
   const inviteBtn = document.getElementById('invite-btn');
@@ -34,9 +36,7 @@ export function initUi() {
   hostPrivateGameButton.addEventListener('click', () => sendClientJoinMessage(usernameInput.value));
   startBtn.addEventListener('click', sendHostStartMessage);
   submitPromptBtn.addEventListener('click', () => {
-    const prompt = (document.getElementById('prompt-input') as HTMLInputElement).value;
-    sendPrompt(prompt);
-    console.log('sending', { prompt });
+    sendPrompt(promptInput.value);
   });
   inviteBtn.addEventListener('click', () => {
     copy(`${window.location.origin}?roomId=${roomIdParam}`);
@@ -44,6 +44,12 @@ export function initUi() {
     setTimeout(() => {
       inviteBtn.innerText = 'Copy Invite Link';
     }, 3000);
+  });
+  usernameInput.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Enter') sendClientJoinMessage(usernameInput.value);
+  });
+  promptInput.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Enter') sendPrompt(promptInput.value);
   });
   if (roomIdParam) hostPrivateGameButton.innerText = 'Join game';
 }

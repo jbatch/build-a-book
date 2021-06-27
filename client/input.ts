@@ -22,7 +22,6 @@ function onMouseUp() {
   sendPlayerCanvas();
   clearPlayerCanvas();
 }
-
 function onMouseMove(e: MouseEvent) {
   const startX = mouseX;
   const startY = mouseY;
