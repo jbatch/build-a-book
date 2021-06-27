@@ -20,6 +20,10 @@ export function sendHostStartMessage() {
   safeEmit('client-host-start');
 }
 
+export function sendPromptVote(userId: string) {
+  safeEmit('client-vote-prompt', { userId });
+}
+
 function _sendPlayerCursor(endX: number, endY: number) {
   safeEmit('client-location', { endX, endY });
 }

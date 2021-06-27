@@ -3,7 +3,8 @@ import { initDrawingTools } from './drawing-tools';
 import { getGameState, processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
 import { initInputHandlers } from './input';
 import { initialiseSocket, safeOn } from './sockets';
-import { drawPlayersInLobby, initUi, SCREENS, showScreen } from './ui';
+import { sendClientJoinMessage } from './network';
+import { drawPlayersInLobby, drawPlayersInPrompt, SCREENS, initUi, showScreen, drawPlayersInVoting } from './ui';
 
 const socket = initialiseSocket();
 
