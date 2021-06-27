@@ -7,6 +7,7 @@ import Game from './game/game';
 import { configureSockets } from './sockets/sockets';
 import http from 'http';
 import path from 'path';
+import RoomManager from './game/room-manager';
 
 const logger = pino();
 
@@ -14,10 +15,11 @@ async function main() {
   const app = express();
   const server = http.createServer(app);
   // Create single instance of game for all players to use
-  const game = new Game();
+  const game = new Game('AAAA');
+  const roomManager = new RoomManager();
 
   // Initalize socketIO
-  configureSockets(server, game);
+  configureSockets(server, roomManager);
 
   if ((process.env.NODE_ENV = 'production')) {
     app.use(express.static(path.join(__dirname, '..', 'client')));

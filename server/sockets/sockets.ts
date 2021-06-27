@@ -1,12 +1,12 @@
 import socketIo from 'socket.io';
 import http from 'http';
 import pino from 'pino';
-import Game from '../game/game';
 import { getSafeSocket } from './safe-socket';
+import RoomManager from '../game/room-manager';
 
 const logger = pino();
 
-export function configureSockets(appServer: http.Server, game: Game) {
+export function configureSockets(appServer: http.Server, roomManager: RoomManager) {
   const server = socketIo(appServer, { pingTimeout: 2000, pingInterval: 10000 });
   logger.info('Started socket.io server on');
 
@@ -30,34 +30,43 @@ export function configureSockets(appServer: http.Server, game: Game) {
       client.username = username;
       safeSocket.join(room);
       // Put player in game.
-      game.addPlayer(safeSocket, username);
+      const game = roomManager.findGameForSocket(safeSocket);
+      if (game) {
+        game.addPlayer(safeSocket, username);
+      } else {
+        roomManager.createNewGame(safeSocket, room, username);
+      }
     }
 
     function handleClientHostUpdateSettings(clientHostUpdateSettings: ClientHostUpdateSettings) {
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleClientHostUpdateSettings(safeSocket, clientHostUpdateSettings);
     }
     function handleClientHostStart(clientHostStart: ClientHostStart) {
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleClientHostStart(safeSocket, clientHostStart);
     }
     function handleClientSubmitPrompt(clientSubmitPrompt: ClientSubmitPrompt) {
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleClientSubmitPrompt(safeSocket, clientSubmitPrompt);
     }
     function handleClientVotePrompt(clientVotePrompt: ClientVotePrompt) {
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleClientVotePrompt(safeSocket, clientVotePrompt);
     }
 
     function handleClientDisconnect() {
       logger.info(`${client.id} (${client.username || 'unknown'}) disconnected`);
-      // Remove player from game.
-      game.removePlayer(safeSocket);
+      roomManager.removePlayerFromRoom(safeSocket);
     }
 
     function handleClientLocation(input: ClientLocation) {
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleInput(safeSocket, input);
     }
 
     function handleClientDraw(input: ClientDraw) {
-      // logger.info("Got [handleClientDraw]: %o", input)
+      const game = roomManager.findGameForSocket(safeSocket);
       game.handleDrawImage(safeSocket, input);
     }
 

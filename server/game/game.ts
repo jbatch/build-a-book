@@ -9,13 +9,15 @@ const FRAMES_PER_SECOND = 1; // 60;
 const logger = pino();
 
 export default class Game {
+  room: string;
   canvas: Canvas;
   canvasCtx: CanvasRenderingContext2D;
   sockets: { [id: string]: SafeSocket };
   players: { [id: string]: Player };
   lastUpdatedTime: number;
   shouldSendUpdate: boolean;
-  constructor() {
+  constructor(room: string) {
+    this.room = room;
     this.canvas = createCanvas(800, 450);
     this.canvasCtx = this.canvas.getContext('2d');
 
@@ -24,6 +26,14 @@ export default class Game {
     this.lastUpdatedTime = Date.now();
     this.shouldSendUpdate = false;
     // setInterval(this.update.bind(this), 1000 / FRAMES_PER_SECOND);
+  }
+
+  getRoomCode() {
+    return this.room;
+  }
+
+  getPlayers() {
+    return Object.values(this.players);
   }
 
   addPlayer(socket: SafeSocket, username: string) {
@@ -50,6 +60,7 @@ export default class Game {
   handleClientVotePrompt(socket: SafeSocket, clientVotePrompt: ClientVotePrompt) {}
 
   removePlayer(socket: SafeSocket) {
+    logger.info(`Removing player ${socket.id} from room ${this.room}.`);
     delete this.sockets[socket.id];
     delete this.players[socket.id];
   }
