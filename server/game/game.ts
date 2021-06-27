@@ -116,6 +116,8 @@ export default class Game {
           clearInterval(this.timer);
           const newBookPage: BookPage = { prompt: this.currentPrompt, imgStr: this.canvas.toDataURL() };
           this.bookPages.push(newBookPage);
+          this.canvas = createCanvas(800, 450);
+          this.canvasCtx = this.canvas.getContext('2d');
           this.page++;
           if (this.page === this.gameSettings.pages) {
             this.status = 'end';

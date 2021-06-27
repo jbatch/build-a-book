@@ -1,6 +1,12 @@
-import { initCanvas, startRenderInterval } from './canvas';
+import { clearBackgroundCanvas, clearPlayerCanvas, initCanvas, startRenderInterval } from './canvas';
 import { initDrawingTools } from './drawing-tools';
-import { getGameState, processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
+import {
+  clearCanvasState,
+  getGameState,
+  processBackgroundUpdate,
+  processCursorsUpdate,
+  processServerRoomState,
+} from './game-state';
 import { initInputHandlers } from './input';
 import { initialiseSocket, safeOn } from './sockets';
 import {
@@ -41,6 +47,7 @@ function init() {
     // Only call showScreen if the screen has changed from the previous state
     if (changedScreen) {
       showScreen(gameState.currentScreen);
+      console.log('Changed Screen: ', previousScreen, gameState.currentScreen);
     }
 
     if (serverRoomState.status === 'lobby') {
@@ -63,6 +70,11 @@ function init() {
     } else if (serverRoomState.status === 'drawing') {
       addPromptToDrawing();
       updateTimerInDrawing();
+      if (changedScreen) {
+        clearCanvasState();
+        clearPlayerCanvas();
+        clearBackgroundCanvas();
+      }
     }
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {

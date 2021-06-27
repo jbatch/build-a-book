@@ -69,6 +69,10 @@ function clearPlayerCanvas() {
   playerCtx.clearRect(0, 0, width, height);
 }
 
+function clearBackgroundCanvas() {
+  ctx.clearRect(0, 0, width, height);
+}
+
 function getCanvas() {
   return canvas;
 }
@@ -100,6 +104,7 @@ export {
   getPlayerCanvas,
   drawPlayer,
   clearPlayerCanvas,
+  clearBackgroundCanvas,
   startRenderInterval,
   stopRenderInterval,
 };

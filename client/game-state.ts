@@ -83,4 +83,9 @@ function setBackgroundDirty(dirty: boolean) {
   gameState.dirty = dirty;
 }
 
-export { getGameState, processServerRoomState, processCursorsUpdate, processBackgroundUpdate };
+function clearCanvasState() {
+  gameState.background = null;
+  gameState.oldBackgroundString = '';
+}
+
+export { getGameState, clearCanvasState, processServerRoomState, processCursorsUpdate, processBackgroundUpdate };
