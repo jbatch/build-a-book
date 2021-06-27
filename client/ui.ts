@@ -1,5 +1,5 @@
 import { getGameState } from './game-state';
-import { sendClientJoinMessage, sendHostStartMessage, sendPromptVote } from './network';
+import { sendClientJoinMessage, sendHostStartMessage, sendPrompt, sendPromptVote } from './network';
 
 export enum SCREENS {
   HOME,
@@ -24,10 +24,16 @@ export function initUi() {
   const hostPrivateGameButton = document.getElementById('host-private-game-btn');
   const inviteBtn = document.getElementById('invite-btn');
   const startBtn = document.getElementById('start-btn');
+  const submitPromptBtn = document.getElementById('submit-prompt-btn');
 
   playBtn.addEventListener('click', () => sendClientJoinMessage(usernameInput.value, 'AAAA'));
   hostPrivateGameButton.addEventListener('click', () => sendClientJoinMessage(usernameInput.value, 'AAAA'));
   startBtn.addEventListener('click', sendHostStartMessage);
+  submitPromptBtn.addEventListener('click', () => {
+    const prompt = (document.getElementById('prompt-input') as HTMLInputElement).value;
+    sendPrompt(prompt);
+    console.log('sending', { prompt });
+  });
 }
 
 export function showScreen(screen: SCREENS) {
