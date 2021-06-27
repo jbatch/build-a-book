@@ -37,6 +37,12 @@
         <div class="card grey lighten-4">
           <div class="card-content">
             <div class="row">
+              <blockquote>
+                Build a Book is a cooperative multiplayer game where the aim is to write (and illustrate) a whole book
+                together.
+              </blockquote>
+            </div>
+            <div class="row">
               <div class="input-field col s6">
                 <input id="username" data-lpignore="true" />
                 <label for="username">Username</label>
@@ -61,7 +67,7 @@
       <h4 class="center-align">Your prompt:</h4>
       <h2 class="center-align" id="drawing-prompt">"Once upon a time there lived a frog and a tiger"</h2>
 
-      <div class="container">
+      <div class="container flex-col">
         <div class="main">
           <div class="canvas-container">
             <canvas id="player-canvas"></canvas>
@@ -91,6 +97,11 @@
         <div class="reset-controls">
           <a class="waves-effect waves-light btn">Reset</a>
         </div>
+      </div>
+
+      <div class="timer">
+        <i class="medium material-icons">access_time</i>
+        <span style="">0s</span>
       </div>
     </div>
 
@@ -153,7 +164,7 @@
 
       <div class="row">
         <div class="col s12 center-align">
-          <a class="waves-effect waves-light btn" id="invite-btn">Copy invite link</a>
+          <a class="waves-effect waves-light btn disabled" id="invite-btn">Copy invite link</a>
         </div>
       </div>
     </div>

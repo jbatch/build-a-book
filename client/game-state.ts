@@ -7,6 +7,7 @@ export type GameState = {
   background: HTMLImageElement;
   oldBackgroundString: string;
   currentPrompt: Prompt;
+  timeRemaining: number;
   dirty: boolean;
 };
 let gameState: GameState = {
@@ -16,6 +17,7 @@ let gameState: GameState = {
   cursors: [],
   background: null,
   oldBackgroundString: '',
+  timeRemaining: 0,
   currentPrompt: null,
   dirty: false,
 };
@@ -38,13 +40,10 @@ function processBackgroundUpdate(backgroundStr: string) {
 
 function processServerRoomState(roomState: ServerRoomState) {
   gameState.players = roomState.players;
-  if (roomState.prompts) {
-    gameState.prompts = roomState.prompts;
-  }
 
-  if (roomState.currentPrompt) {
-    gameState.currentPrompt = roomState.currentPrompt;
-  }
+  if (roomState.prompts) gameState.prompts = roomState.prompts;
+  if (roomState.currentPrompt) gameState.currentPrompt = roomState.currentPrompt;
+  if (roomState.timeRemaining) gameState.timeRemaining = roomState.timeRemaining;
 
   switch (roomState.status) {
     case 'lobby':

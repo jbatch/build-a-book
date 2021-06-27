@@ -124,3 +124,9 @@ export function addPromptToDrawing() {
   const promptEl = document.querySelector('#drawing-prompt') as HTMLHeadingElement;
   promptEl.innerText = `"${state.currentPrompt.prompt}"`;
 }
+
+export function updateTimerInDrawing() {
+  const state = getGameState();
+  const timerEl = document.querySelector('#screen-game .timer span') as HTMLSpanElement;
+  timerEl.innerText = `${state.timeRemaining}s`;
+}

@@ -13,6 +13,7 @@ import {
   drawPlayersInVoting,
   addVotingEventHandlers,
   addPromptToDrawing,
+  updateTimerInDrawing,
 } from './ui';
 
 const socket = initialiseSocket();
@@ -48,6 +49,7 @@ function init() {
       addVotingEventHandlers();
     } else if (serverRoomState.status === 'drawing') {
       addPromptToDrawing();
+      updateTimerInDrawing();
     }
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {
