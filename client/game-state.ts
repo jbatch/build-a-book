@@ -71,7 +71,7 @@ function processServerRoomState(roomState: ServerRoomState) {
       gameState.currentScreen = SCREENS.GAME;
       break;
     case 'end':
-      gameState.currentScreen = SCREENS.LOBBY;
+      gameState.currentScreen = SCREENS.END;
       break;
     default:
       break;
