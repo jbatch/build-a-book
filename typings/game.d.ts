@@ -18,6 +18,7 @@ type CollectableState = {
 type Prompt = {
   userId: string;
   prompt: string;
+  votes: number;
 };
 
 type RoomStatus = ServerRoomState['status'];

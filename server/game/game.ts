@@ -64,12 +64,26 @@ export default class Game {
     this.broadcastRoomState(socket);
   }
   handleClientSubmitPrompt(socket: SafeSocket, { prompt }: ClientSubmitPrompt) {
-    this.prompts.push({ userId: socket.id, prompt });
+    this.prompts.push({ userId: socket.id, prompt, votes: 0 });
     const player = this._findPlayer(socket);
     player.actionPending = false;
+    if (Object.values(this.players).every((p) => !p.actionPending)) {
+      Object.values(this.players).map((p) => (p.actionPending = true));
+      this.status = 'voting';
+    }
     this.broadcastRoomState(socket);
   }
-  handleClientVotePrompt(socket: SafeSocket, clientVotePrompt: ClientVotePrompt) {}
+  handleClientVotePrompt(socket: SafeSocket, { userId }: ClientVotePrompt) {
+    const votedForPrompt = this.prompts.find((p) => (p.userId = userId));
+    votedForPrompt.votes++;
+    const player = this._findPlayer(socket);
+    player.actionPending = false;
+    if (Object.values(this.players).every((p) => !p.actionPending)) {
+      this.status = 'drawing';
+      this.prompts = [];
+      this.currentPrompt = this._getWinningPrompt();
+    }
+  }
 
   removePlayer(socket: SafeSocket) {
     logger.info(`Removing player ${socket.id} from room ${this.room}.`);
@@ -140,6 +154,12 @@ export default class Game {
 
   _findPlayer(socket: SafeSocket) {
     return Object.values(this.players).find((p) => p.id === socket.id);
+  }
+
+  _getWinningPrompt() {
+    const maxVotes = this.prompts.map((p) => p.votes).reduce((prev, curr) => (curr > prev ? curr : prev), 0);
+    const tiedPrompts = this.prompts.filter((p) => p.votes == maxVotes);
+    return tiedPrompts[Math.floor(Math.random() * tiedPrompts.length)];
   }
 
   update() {
