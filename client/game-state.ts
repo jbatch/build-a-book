@@ -1,4 +1,6 @@
+import { SCREENS } from './ui';
 export type GameState = {
+  currentScreen: SCREENS;
   players: Array<PlayerState>;
   cursors: Array<PlayerState>;
   background: HTMLImageElement;
@@ -6,6 +8,7 @@ export type GameState = {
   dirty: boolean;
 };
 let gameState: GameState = {
+  currentScreen: SCREENS.HOME,
   players: [],
   cursors: [],
   background: null,
@@ -31,6 +34,25 @@ function processBackgroundUpdate(backgroundStr: string) {
 
 function processServerRoomState(roomState: ServerRoomState) {
   gameState.players = roomState.players;
+  switch (roomState.status) {
+    case 'lobby':
+      gameState.currentScreen = SCREENS.LOBBY;
+      break;
+    case 'submitting-prompts':
+      gameState.currentScreen = SCREENS.PROMPTS;
+      break;
+    case 'voting':
+      gameState.currentScreen = SCREENS.VOTING;
+      break;
+    case 'drawing':
+      gameState.currentScreen = SCREENS.GAME;
+      break;
+    case 'end':
+      gameState.currentScreen = SCREENS.LOBBY;
+      break;
+    default:
+      break;
+  }
 }
 
 function processCursorsUpdate(cursors: Array<any>) {

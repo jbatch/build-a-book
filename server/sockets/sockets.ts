@@ -58,7 +58,9 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
 
     function handleClientDisconnect() {
       logger.info(`${client.id} (${client.username || 'unknown'}) disconnected`);
-      roomManager.removePlayerFromRoom(safeSocket);
+      try {
+        roomManager.removePlayerFromRoom(safeSocket);
+      } catch (error) {}
     }
 
     function handleClientLocation(input: ClientLocation) {

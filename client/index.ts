@@ -1,10 +1,9 @@
-import { initialiseSocket, safeOn, safeEmit } from './sockets';
-import { initCanvas, getCanvas, startRenderInterval } from './canvas';
-import { initInputHandlers } from './input';
-import { processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
+import { initCanvas, startRenderInterval } from './canvas';
 import { initDrawingTools } from './drawing-tools';
-import { sendClientJoinMessage } from './network';
-import { drawPlayersInLobby, drawPlayersInPrompt, SCREENS, initUi, showScreen } from './ui';
+import { getGameState, processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
+import { initInputHandlers } from './input';
+import { initialiseSocket, safeOn } from './sockets';
+import { drawPlayersInLobby, initUi, SCREENS, showScreen } from './ui';
 
 const socket = initialiseSocket();
 
@@ -17,15 +16,19 @@ function init() {
   showScreen(SCREENS.HOME);
   drawPlayersInLobby();
 
-  socket.on('connect', () => {
-    const playerName = 'Player ' + Math.floor(Math.random() * 100);
-    // sendClientJoinMessage(playerName, 'AAAA');
-  });
+  socket.on('connect', () => {});
+
   safeOn('server-room-state', (serverRoomState) => {
     console.log('Got server-room-state', { state: serverRoomState });
+    const gameState = getGameState();
+    const previousScreen = gameState.currentScreen;
     processServerRoomState(serverRoomState);
+    // Only call showScreen if the screen has changed from the previous state
+    if (previousScreen !== gameState.currentScreen && gameState.currentScreen !== SCREENS.HOME) {
+      showScreen(gameState.currentScreen);
+    }
+
     if (serverRoomState.status === 'lobby') {
-      showScreen(SCREENS.LOBBY);
       drawPlayersInLobby();
     }
   });
