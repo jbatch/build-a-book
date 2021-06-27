@@ -2,8 +2,20 @@ import { debounce } from 'throttle-debounce';
 import { getPlayerCanvas } from './canvas';
 import { safeEmit } from './sockets';
 
-export function sendClientJoinMessage(username: string, room: string) {
-  safeEmit('client-join', { username, room });
+function randomRoomCode() {
+  const fromList = 'abcdefghijklmnopqrstuvwxyz1234567890';
+  let code = '';
+  for (let i = 0; i < 5; i++) {
+    code += fromList[Math.floor(Math.random() * fromList.length)];
+  }
+  return code;
+}
+
+export function sendClientJoinMessage(username: string) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomIdParam = urlParams.get('roomId');
+  const roomCode = roomIdParam || randomRoomCode();
+  safeEmit('client-join', { username, room: roomCode });
 }
 
 export function sendPlayerCanvas() {

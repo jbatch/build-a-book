@@ -1,5 +1,6 @@
 import { getGameState, GameState } from './game-state';
 import { sendClientJoinMessage, sendHostStartMessage, sendPrompt, sendPromptVote, sendUpdateSettings } from './network';
+import copy from 'copy-to-clipboard';
 
 export enum SCREENS {
   HOME,
@@ -27,15 +28,24 @@ export function initUi() {
   const inviteBtn = document.getElementById('invite-btn');
   const startBtn = document.getElementById('start-btn');
   const submitPromptBtn = document.getElementById('submit-prompt-btn');
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomIdParam = urlParams.get('roomId');
 
-  playBtn.addEventListener('click', () => sendClientJoinMessage(usernameInput.value, 'AAAA'));
-  hostPrivateGameButton.addEventListener('click', () => sendClientJoinMessage(usernameInput.value, 'AAAA'));
+  hostPrivateGameButton.addEventListener('click', () => sendClientJoinMessage(usernameInput.value));
   startBtn.addEventListener('click', sendHostStartMessage);
   submitPromptBtn.addEventListener('click', () => {
     const prompt = (document.getElementById('prompt-input') as HTMLInputElement).value;
     sendPrompt(prompt);
     console.log('sending', { prompt });
   });
+  inviteBtn.addEventListener('click', () => {
+    copy(`${window.location.origin}?roomId=${roomIdParam}`);
+    inviteBtn.innerText = 'Copied!';
+    setTimeout(() => {
+      inviteBtn.innerText = 'Copy Invite Link';
+    }, 3000);
+  });
+  if (roomIdParam) hostPrivateGameButton.innerText = 'Join game';
 }
 
 export function showScreen(screen: SCREENS) {

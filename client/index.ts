@@ -9,6 +9,7 @@ import {
   processServerRoomState,
 } from './game-state';
 import { initInputHandlers } from './input';
+import { sendClientJoinMessage } from './network';
 import { initialiseSocket, safeOn } from './sockets';
 import {
   drawPlayersInLobby,
