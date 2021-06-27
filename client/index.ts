@@ -21,6 +21,9 @@ function init() {
   });
   safeOn('server-room-state', (serverRoomState) => {
     processServerRoomState(serverRoomState);
+    if (serverRoomState.status === 'lobby') {
+      drawPlayersInLobby();
+    }
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {
     processCursorsUpdate(serverUpdateCursors.cursors);

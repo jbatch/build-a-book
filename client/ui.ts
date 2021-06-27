@@ -1,3 +1,5 @@
+import { getGameState } from './game-state';
+
 export enum SCREENS {
   HOME,
   LOBBY,
@@ -17,7 +19,7 @@ export function showScreen(screen: SCREENS) {
 }
 
 export function drawPlayersInLobby() {
-  const players = ['Luke', 'Bob', 'Alice', 'Tom Cruise'];
+  const players = getGameState().players;
   const lobbyEl = document.getElementById('lobby-players-list');
 
   lobbyEl.innerHTML = '';
@@ -25,7 +27,7 @@ export function drawPlayersInLobby() {
     const el = document.createElement('div');
     el.classList.add('row');
     el.innerHTML = `<a class="btn-floating"><i class="material-icons">person</i></a><span class="ml2"></span>`;
-    el.querySelector('span').innerText = player;
+    el.querySelector('span').innerText = player.username;
     lobbyEl.appendChild(el);
   });
 }

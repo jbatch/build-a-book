@@ -1,10 +1,12 @@
 export type GameState = {
+  players: Array<PlayerState>;
   cursors: Array<PlayerState>;
   background: HTMLImageElement;
   oldBackgroundString: string;
   dirty: boolean;
 };
 let gameState: GameState = {
+  players: [],
   cursors: [],
   background: null,
   oldBackgroundString: '',
@@ -28,7 +30,9 @@ function processBackgroundUpdate(backgroundStr: string) {
 }
 
 function processServerRoomState(roomState: ServerRoomState) {
-  console.log('Got: server-room-state', { state: roomState });
+  if (roomState.status === 'lobby') {
+    gameState.players = roomState.players;
+  }
 }
 
 function processCursorsUpdate(cursors: Array<any>) {
