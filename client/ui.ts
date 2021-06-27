@@ -95,7 +95,6 @@ export function drawPlayersInVoting() {
 
 export function addVotingEventHandlers() {
   const votingEls = document.querySelectorAll('#prompt-voting-list .row');
-  console.log({ votingEls });
   votingEls.forEach((el: HTMLDivElement) =>
     el.addEventListener('click', () => {
       const userId = el.dataset['userid'];
