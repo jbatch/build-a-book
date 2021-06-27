@@ -7,13 +7,13 @@ import { createCanvas, Canvas, CanvasRenderingContext2D, Image } from 'canvas';
 const FRAMES_PER_SECOND = 1; // 60;
 
 const logger = pino();
-
 export default class Game {
   // Game State
   room: string;
   page: number;
   status: RoomStatus;
   prompts?: Array<Prompt>;
+  bookPages?: Array<BookPage>;
   currentPrompt?: Prompt;
   timeRemaining: number;
   timer?: ReturnType<typeof setInterval>;
@@ -33,6 +33,7 @@ export default class Game {
     this.page = 0;
     this.status = 'lobby';
     this.prompts = [];
+    this.bookPages = [];
     this.currentPrompt = undefined;
     this.timeRemaining = 0;
     this.timer = undefined;
@@ -110,6 +111,8 @@ export default class Game {
         if (this.timeRemaining === -1) {
           clearInterval(this.timer);
           this.status = 'end'; // TODO (add pages and loop back t submitting prompts)
+          const newBookPage: BookPage = { prompt: this.currentPrompt, imgStr: this.canvas.toDataURL() };
+          this.bookPages.push(newBookPage);
         }
         this.broadcastRoomState(socket);
       }, 1000);
@@ -169,7 +172,7 @@ export default class Game {
       case 'lobby':
       case 'submitting-prompts':
       case 'end':
-        return requiredFields;
+        return { ...requiredFields, bookPages: this.bookPages };
       case 'voting':
         return { ...requiredFields, prompts: this.prompts };
       case 'drawing':

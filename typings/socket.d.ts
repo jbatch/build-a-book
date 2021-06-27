@@ -29,6 +29,7 @@ type ServerRoomState = {
   prompts?: Array<Prompt>;
   currentPrompt?: Prompt;
   timeRemaining?: number;
+  bookPages?: Array<BookPage>;
 };
 type ServerUpdateCursors = {
   t: number;

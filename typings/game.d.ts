@@ -21,6 +21,11 @@ type Prompt = {
   votes: number;
 };
 
+type BookPage = {
+  prompt: Prompt;
+  imgStr: string;
+};
+
 type RoomStatus = ServerRoomState['status'];
 
 type GameSettings = {
