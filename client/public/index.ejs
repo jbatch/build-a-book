@@ -32,38 +32,103 @@
       </div>
     </nav>
 
-    <h4 class="center-align">Your prompt:</h4>
-    <h2 class="center-align">"Once upon a time there lived a frog and a tiger"</h2>
+    <div id="screen-game">
+      <h4 class="center-align">Your prompt:</h4>
+      <h2 class="center-align">"Once upon a time there lived a frog and a tiger"</h2>
 
-    <div class="container">
-      <div class="main">
-        <div class="canvas-container">
-          <canvas id="player-canvas"></canvas>
-          <canvas id="game-canvas"></canvas>
+      <div class="container">
+        <div class="main">
+          <div class="canvas-container">
+            <canvas id="player-canvas"></canvas>
+            <canvas id="game-canvas"></canvas>
+          </div>
+        </div>
+        <div class="canvas-tools">
+          <div class="size-controls">
+            <a class="btn-floating"><i class="material-icons circle-sml">brightness_1</i></a>
+            <a class="btn-floating"><i class="material-icons circle-med">brightness_1</i></a>
+            <a class="btn-floating"><i class="material-icons circle-lrg">brightness_1</i></a>
+            <a class="btn-floating"><i class="material-icons circle-xlg">brightness_1</i></a>
+          </div>
+          <div class="color-controls">
+            <a class="btn-floating"><i class="material-icons swatch-red">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-orange">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-yellow">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-green">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-blue">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-indigo">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-violet">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-brown">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-black">brush</i></a>
+            <a class="btn-floating"><i class="material-icons swatch-white">brush</i></a>
+          </div>
+        </div>
+        <div class="reset-controls">
+          <a class="waves-effect waves-light btn">Reset</a>
         </div>
       </div>
-      <div class="canvas-tools">
-        <div class="size-controls">
-          <a class="btn-floating"><i class="material-icons circle-sml">brightness_1</i></a>
-          <a class="btn-floating"><i class="material-icons circle-med">brightness_1</i></a>
-          <a class="btn-floating"><i class="material-icons circle-lrg">brightness_1</i></a>
-          <a class="btn-floating"><i class="material-icons circle-xlg">brightness_1</i></a>
-        </div>
-        <div class="color-controls">
-          <a class="btn-floating"><i class="material-icons swatch-red">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-orange">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-yellow">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-green">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-blue">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-indigo">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-violet">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-brown">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-black">brush</i></a>
-          <a class="btn-floating"><i class="material-icons swatch-white">brush</i></a>
+    </div>
+
+    <div id="screen-lobby">
+      <div class="container">
+        <div class="row">
+          <div class="col s6">
+            <h4 class="center-align">Settings</h4>
+            <div class="card grey lighten-4">
+              <div class="card-content">
+                <div class="row">
+                  <form class="col s12">
+                    <div class="row">
+                      <div class="input-field col s6">
+                        <input value="6" id="num_pages" type="number" class="validate" />
+                        <label for="num_pages">Pages</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s6">
+                        <input value="30" id="draw_time" type="number" class="validate" />
+                        <label for="draw_time">Drawing time (seconds)</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input
+                          placeholder="Once upon a time in...."
+                          id="starting_sentence"
+                          type="text"
+                          class="validate"
+                        />
+                        <label for="starting_sentence">Starting Prompt</label>
+                      </div>
+                    </div>
+                    <div class="row mt4">
+                      <div class="col s12 center-align">
+                        <a class="waves-effect waves-light btn">Start Game</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s6">
+            <h4 class="center-align">Players</h4>
+            <div class="card grey lighten-4">
+              <div class="card-content" id="lobby-players-list">
+                <div class="row">
+                  <a class="btn-floating"><i class="material-icons">person</i></a>
+                  <span class="ml2">Player Name</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="reset-controls">
-        <a class="waves-effect waves-light btn">Reset</a>
+
+      <div class="row">
+        <div class="col s12 center-align">
+          <a class="waves-effect waves-light btn">Copy invite link</a>
+        </div>
       </div>
     </div>
 

@@ -78,3 +78,26 @@ body,
 .btn-floating i.swatch-white {
   color: white;
 }
+
+.hidden {
+  display: none;
+}
+
+#screen-lobby .container {
+  margin-top: 32px;
+}
+
+#screen-lobby .container .col {
+  /* border: 1px solid red; */
+}
+
+#lobby-players-list {
+  padding: 32px;
+}
+
+.mt4 {
+  margin-top: 32px;
+}
+.ml2 {
+  margin-left: 16px;
+}

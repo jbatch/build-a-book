@@ -3,6 +3,7 @@ import { initCanvas, getCanvas, startRenderInterval } from './canvas';
 import { initInputHandlers } from './input';
 import { processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
 import { initDrawingTools } from './drawing-tools';
+import { drawPlayersInLobby, SCREENS, showScreen } from './ui';
 
 const socket = initialiseSocket();
 
@@ -11,6 +12,8 @@ function init() {
   initInputHandlers();
   initDrawingTools();
   startRenderInterval();
+  showScreen(SCREENS.LOBBY);
+  drawPlayersInLobby();
 
   socket.on('connect', () => {
     const playerName = 'Player ' + Math.floor(Math.random() * 100);
