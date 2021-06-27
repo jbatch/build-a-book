@@ -1,5 +1,5 @@
-import { getGameState } from './game-state';
-import { sendClientJoinMessage, sendHostStartMessage, sendPrompt, sendPromptVote } from './network';
+import { getGameState, GameState } from './game-state';
+import { sendClientJoinMessage, sendHostStartMessage, sendPrompt, sendPromptVote, sendUpdateSettings } from './network';
 
 export enum SCREENS {
   HOME,
@@ -129,4 +129,32 @@ export function updateTimerInDrawing() {
   const state = getGameState();
   const timerEl = document.querySelector('#screen-game .timer span') as HTMLSpanElement;
   timerEl.innerText = `${state.timeRemaining}s`;
+}
+
+export function drawUpdatedSettings() {
+  const gameSettings = getGameState().gameSettings;
+  const numPagesInput = document.getElementById('num_pages') as HTMLInputElement;
+  const drawTimeInput = document.getElementById('draw_time') as HTMLInputElement;
+
+  numPagesInput.value = String(gameSettings.pages);
+  drawTimeInput.value = String(gameSettings.drawingTime);
+}
+
+export function addSettingsUpdatedHandlers() {
+  const numPagesInput = document.getElementById('num_pages') as HTMLInputElement;
+  const drawTimeInput = document.getElementById('draw_time') as HTMLInputElement;
+
+  const sendUpdatedSettings = () => {
+    const pages = numPagesInput.value;
+    const drawingTime = drawTimeInput.value;
+    // Check values are valid
+    // TODO Add min/max bounds to these numbers
+    if (isNaN(parseInt(pages)) || isNaN(parseInt(drawingTime))) {
+      // Don't update settings with invalid values
+      return;
+    }
+    sendUpdateSettings({ pages: Number(pages), drawingTime: Number(drawingTime) });
+  };
+  numPagesInput.addEventListener('blur', sendUpdatedSettings);
+  drawTimeInput.addEventListener('blur', sendUpdatedSettings);
 }

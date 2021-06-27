@@ -16,7 +16,7 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
 
     // Setup event listeners for client
     safeSocket.safeOn('client-join', handleClientJoin);
-    safeSocket.safeOn('client-host-settings-update', handleClientHostUpdateSettings);
+    safeSocket.safeOn('client-host-update-settings', handleClientHostUpdateSettings);
     safeSocket.safeOn('client-host-start', handleClientHostStart);
     safeSocket.safeOn('client-submit-prompt', handleClientSubmitPrompt);
     safeSocket.safeOn('client-vote-prompt', handleClientVotePrompt);

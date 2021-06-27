@@ -9,6 +9,7 @@ const FRAMES_PER_SECOND = 1; // 60;
 const logger = pino();
 
 export default class Game {
+  // Game State
   room: string;
   page: number;
   status: RoomStatus;
@@ -16,10 +17,15 @@ export default class Game {
   currentPrompt?: Prompt;
   timeRemaining: number;
   timer?: ReturnType<typeof setInterval>;
+  players: { [id: string]: Player };
+  gameSettings: GameSettings;
+
+  // Server state
+  sockets: { [id: string]: SafeSocket };
+
+  // Drawing stuff
   canvas: Canvas;
   canvasCtx: CanvasRenderingContext2D;
-  sockets: { [id: string]: SafeSocket };
-  players: { [id: string]: Player };
   lastUpdatedTime: number;
   shouldSendUpdate: boolean;
   constructor(room: string) {
@@ -35,6 +41,10 @@ export default class Game {
 
     this.sockets = {};
     this.players = {};
+    this.gameSettings = {
+      drawingTime: 60,
+      pages: 10,
+    };
     this.lastUpdatedTime = Date.now();
     this.shouldSendUpdate = false;
     // setInterval(this.update.bind(this), 1000 / FRAMES_PER_SECOND);
@@ -59,7 +69,11 @@ export default class Game {
     socket.safeEmit('server-welcome', { id: socket.id, color, backgroundImage: this.canvas.toDataURL() });
   }
 
-  handleClientHostUpdateSettings(socket: SafeSocket, clientHostUpdateSettings: ClientHostUpdateSettings) {}
+  handleClientHostUpdateSettings(socket: SafeSocket, { gameSettings }: ClientHostUpdateSettings) {
+    this.gameSettings = gameSettings;
+    this.broadcastRoomState(socket);
+    logger.info(`Updated game settings in room ${this.room} [%o]`, { gameSettings });
+  }
   handleClientHostStart(socket: SafeSocket, clientHostStart: ClientHostStart) {
     logger.info(`Host started game in room ${this.room}`);
     this.currentPrompt = undefined;
@@ -146,6 +160,7 @@ export default class Game {
       players: Object.entries(this.players).map(([_, player]) => player.serializeForUpdate()),
       page: this.page,
       status: this.status,
+      gameSettings: this.gameSettings,
     };
     switch (this.status) {
       case 'lobby':
@@ -156,15 +171,7 @@ export default class Game {
         return { ...requiredFields, prompts: this.prompts };
       case 'drawing':
         return { ...requiredFields, currentPrompt: this.currentPrompt, timeRemaining: this.timeRemaining };
-      default:
-        break;
     }
-    return {
-      room: this.room,
-      players: Object.entries(this.players).map(([_, player]) => player.serializeForUpdate()),
-      page: this.page,
-      status: this.status,
-    };
   }
 
   _findPlayer(socket: SafeSocket) {

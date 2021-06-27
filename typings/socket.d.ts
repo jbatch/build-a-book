@@ -1,6 +1,6 @@
 // Client
 type ClientJoin = { username: string; room: string };
-type ClientHostUpdateSettings = {};
+type ClientHostUpdateSettings = { gameSettings: GameSettings };
 type ClientHostStart = {};
 type ClientSubmitPrompt = { prompt: string };
 type ClientVotePrompt = { userId: string }; // UserId of the user that submitted the prompt
@@ -24,6 +24,7 @@ type ServerRoomState = {
   room: string;
   players: Array<PlayerState>;
   page: number;
+  gameSettings: GameSettings;
   status: 'lobby' | 'submitting-prompts' | 'voting' | 'drawing' | 'end';
   prompts?: Array<Prompt>;
   currentPrompt?: Prompt;
@@ -41,7 +42,7 @@ type ServerUpdateBackground = {
 type SocketEvents = {
   // Sent by client
   'client-join': ClientJoin;
-  'client-host-settings-update': ClientHostUpdateSettings;
+  'client-host-update-settings': ClientHostUpdateSettings;
   'client-host-start': ClientHostStart;
   'client-submit-prompt': ClientSubmitPrompt;
   'client-vote-prompt': ClientVotePrompt;

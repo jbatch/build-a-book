@@ -16,6 +16,10 @@ export function sendCanvasResetMessage() {
   safeEmit('client-canvas-reset', {});
 }
 
+export function sendUpdateSettings(gameSettings: GameSettings) {
+  safeEmit('client-host-update-settings', { gameSettings });
+}
+
 export function sendHostStartMessage() {
   safeEmit('client-host-start');
 }

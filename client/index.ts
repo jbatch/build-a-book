@@ -14,6 +14,8 @@ import {
   addVotingEventHandlers,
   addPromptToDrawing,
   updateTimerInDrawing,
+  drawUpdatedSettings,
+  addSettingsUpdatedHandlers,
 } from './ui';
 
 const socket = initialiseSocket();
@@ -34,19 +36,26 @@ function init() {
     const gameState = getGameState();
     const previousScreen = gameState.currentScreen;
     processServerRoomState(serverRoomState);
+    const changedScreen = previousScreen !== gameState.currentScreen && gameState.currentScreen !== SCREENS.HOME;
     // Only call showScreen if the screen has changed from the previous state
-    if (previousScreen !== gameState.currentScreen && gameState.currentScreen !== SCREENS.HOME) {
+    if (changedScreen) {
       showScreen(gameState.currentScreen);
     }
 
     if (serverRoomState.status === 'lobby') {
       drawPlayersInLobby();
+      drawUpdatedSettings();
+      if (changedScreen) {
+        addSettingsUpdatedHandlers();
+      }
     } else if (serverRoomState.status === 'submitting-prompts') {
       drawPlayersInPrompt();
     } else if (serverRoomState.status === 'voting') {
       drawPlayersInVoting();
-      drawPromptsInVoting();
-      addVotingEventHandlers();
+      if (changedScreen) {
+        drawPromptsInVoting();
+        addVotingEventHandlers();
+      }
     } else if (serverRoomState.status === 'drawing') {
       addPromptToDrawing();
       updateTimerInDrawing();

@@ -22,3 +22,8 @@ type Prompt = {
 };
 
 type RoomStatus = ServerRoomState['status'];
+
+type GameSettings = {
+  drawingTime: number;
+  pages: number;
+};

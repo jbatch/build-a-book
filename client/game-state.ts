@@ -1,6 +1,7 @@
 import { SCREENS } from './ui';
 export type GameState = {
   currentScreen: SCREENS;
+  gameSettings: GameSettings;
   players: Array<PlayerState>;
   prompts: Array<Prompt>;
   cursors: Array<PlayerState>;
@@ -12,6 +13,7 @@ export type GameState = {
 };
 let gameState: GameState = {
   currentScreen: SCREENS.HOME,
+  gameSettings: { drawingTime: 60, pages: 5 },
   players: [],
   prompts: [],
   cursors: [],
@@ -40,6 +42,10 @@ function processBackgroundUpdate(backgroundStr: string) {
 
 function processServerRoomState(roomState: ServerRoomState) {
   gameState.players = roomState.players;
+  gameState.gameSettings = roomState.gameSettings;
+  if (roomState.prompts) {
+    gameState.prompts = roomState.prompts;
+  }
 
   if (roomState.prompts) gameState.prompts = roomState.prompts;
   if (roomState.currentPrompt) gameState.currentPrompt = roomState.currentPrompt;
