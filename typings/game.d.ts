@@ -19,3 +19,5 @@ type Prompt = {
   userId: string;
   prompt: string;
 };
+
+type RoomStatus = ServerRoomState['status'];

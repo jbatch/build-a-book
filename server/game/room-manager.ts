@@ -17,6 +17,7 @@ export default class RoomManager {
     const game = new Game(room);
     game.addPlayer(socket, hostUsername);
     this.games[room] = game;
+    return game;
   }
 
   removePlayerFromRoom(socket: SafeSocket) {

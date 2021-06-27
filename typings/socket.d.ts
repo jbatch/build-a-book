@@ -24,13 +24,10 @@ type ServerRoomState = {
   room: string;
   players: Array<PlayerState>;
   page: number;
-} & (
-  | { status: 'lobby' }
-  | { status: 'submitting-prompts' }
-  | { status: 'voting'; prompts: Array<Prompt> }
-  | { status: 'drawing'; prompt: Prompt }
-  | { status: 'end' }
-);
+  status: 'lobby' | 'submitting-prompts' | 'voting' | 'drawing' | 'end';
+  prompts?: Array<Prompt>;
+  currentPrompt?: Prompt;
+};
 type ServerUpdateCursors = {
   t: number;
   serverFps: number;

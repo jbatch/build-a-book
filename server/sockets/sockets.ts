@@ -30,12 +30,13 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
       client.username = username;
       safeSocket.join(room);
       // Put player in game.
-      const game = roomManager.findGameForSocket(safeSocket);
+      let game = roomManager.findGameForSocket(safeSocket);
       if (game) {
         game.addPlayer(safeSocket, username);
       } else {
-        roomManager.createNewGame(safeSocket, room, username);
+        game = roomManager.createNewGame(safeSocket, room, username);
       }
+      game.broadcastRoomState(safeSocket);
     }
 
     function handleClientHostUpdateSettings(clientHostUpdateSettings: ClientHostUpdateSettings) {

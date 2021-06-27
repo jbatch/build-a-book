@@ -10,6 +10,10 @@ const logger = pino();
 
 export default class Game {
   room: string;
+  page: number;
+  status: RoomStatus;
+  prompts?: Array<Prompt>;
+  currentPrompt?: Prompt;
   canvas: Canvas;
   canvasCtx: CanvasRenderingContext2D;
   sockets: { [id: string]: SafeSocket };
@@ -18,6 +22,10 @@ export default class Game {
   shouldSendUpdate: boolean;
   constructor(room: string) {
     this.room = room;
+    this.page = 0;
+    this.status = 'lobby';
+    this.prompts = [];
+    this.currentPrompt = undefined;
     this.canvas = createCanvas(800, 450);
     this.canvasCtx = this.canvas.getContext('2d');
 
@@ -49,14 +57,18 @@ export default class Game {
 
   handleClientHostUpdateSettings(socket: SafeSocket, clientHostUpdateSettings: ClientHostUpdateSettings) {}
   handleClientHostStart(socket: SafeSocket, clientHostStart: ClientHostStart) {
-    socket.safeBroadcast('server-room-state', {
-      room: 'AAAA',
-      players: Object.entries(this.players).map(([_, player]) => player.serializeForUpdate()),
-      page: 0,
-      status: 'submitting-prompts',
-    });
+    this.currentPrompt = undefined;
+    this.prompts = [];
+    Object.values(this.players).map((p) => (p.actionPending = true));
+    this.status = 'submitting-prompts';
+    this.broadcastRoomState(socket);
   }
-  handleClientSubmitPrompt(socket: SafeSocket, clientSubmitPrompt: ClientSubmitPrompt) {}
+  handleClientSubmitPrompt(socket: SafeSocket, { prompt }: ClientSubmitPrompt) {
+    this.prompts.push({ userId: socket.id, prompt });
+    const player = this._findPlayer(socket);
+    player.actionPending = false;
+    this.broadcastRoomState(socket);
+  }
   handleClientVotePrompt(socket: SafeSocket, clientVotePrompt: ClientVotePrompt) {}
 
   removePlayer(socket: SafeSocket) {
@@ -93,6 +105,41 @@ export default class Game {
   handleClientCanvasReset(socket: SafeSocket) {
     this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     socket.safeBroadcast('server-update-background', { backgroundImage: this.canvas.toDataURL() });
+  }
+
+  broadcastRoomState(socket: SafeSocket) {
+    socket.safeRoomEmit(this.room, 'server-room-state', this._serializeRoomState());
+  }
+
+  _serializeRoomState() {
+    const requiredFields = {
+      room: this.room,
+      players: Object.entries(this.players).map(([_, player]) => player.serializeForUpdate()),
+      page: this.page,
+      status: this.status,
+    };
+    switch (this.status) {
+      case 'lobby':
+      case 'submitting-prompts':
+      case 'end':
+        return requiredFields;
+      case 'voting':
+        return { ...requiredFields, prompts: this.prompts };
+      case 'drawing':
+        return { ...requiredFields, currentPrompt: this.currentPrompt };
+      default:
+        break;
+    }
+    return {
+      room: this.room,
+      players: Object.entries(this.players).map(([_, player]) => player.serializeForUpdate()),
+      page: this.page,
+      status: this.status,
+    };
+  }
+
+  _findPlayer(socket: SafeSocket) {
+    return Object.values(this.players).find((p) => p.id === socket.id);
   }
 
   update() {
