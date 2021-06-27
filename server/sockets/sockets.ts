@@ -70,6 +70,9 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
 
     function handleClientDraw(input: ClientDraw) {
       const game = roomManager.findGameForSocket(safeSocket);
+      if (!game) {
+        return;
+      }
       game.handleDrawImage(safeSocket, input);
     }
 

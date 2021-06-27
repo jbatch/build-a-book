@@ -95,6 +95,9 @@ export default class Game {
   }
   handleClientVotePrompt(socket: SafeSocket, { userId }: ClientVotePrompt) {
     const votedForPrompt = this.prompts.find((p) => (p.userId = userId));
+    if (!votedForPrompt) {
+      return;
+    }
     votedForPrompt.votes++;
     const player = this._findPlayer(socket);
     if (!player) {
@@ -103,6 +106,7 @@ export default class Game {
     player.actionPending = false;
     if (Object.values(this.players).every((p) => !p.actionPending)) {
       this.status = 'drawing';
+      Object.values(this.players).map((p) => (p.actionPending = true));
       this.currentPrompt = this._getWinningPrompt();
       this.prompts = [];
       this.timeRemaining = this.gameSettings.drawingTime;
@@ -110,9 +114,16 @@ export default class Game {
         this.timeRemaining--;
         if (this.timeRemaining === -1) {
           clearInterval(this.timer);
-          this.status = 'end'; // TODO (add pages and loop back t submitting prompts)
           const newBookPage: BookPage = { prompt: this.currentPrompt, imgStr: this.canvas.toDataURL() };
           this.bookPages.push(newBookPage);
+          this.page++;
+          if (this.page === this.gameSettings.pages) {
+            this.status = 'end';
+            // Send back end state with all pages in it.
+          } else {
+            // Still move pages to create.
+            this.status = 'submitting-prompts';
+          }
         }
         this.broadcastRoomState(socket);
       }, 1000);

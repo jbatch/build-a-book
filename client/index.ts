@@ -16,6 +16,7 @@ import {
   updateTimerInDrawing,
   drawUpdatedSettings,
   addSettingsUpdatedHandlers,
+  drawPageNumberInSubmittingPrompts,
 } from './ui';
 
 const socket = initialiseSocket();
@@ -50,6 +51,9 @@ function init() {
       }
     } else if (serverRoomState.status === 'submitting-prompts') {
       drawPlayersInPrompt();
+      if (changedScreen) {
+        drawPageNumberInSubmittingPrompts();
+      }
     } else if (serverRoomState.status === 'voting') {
       drawPlayersInVoting();
       if (changedScreen) {

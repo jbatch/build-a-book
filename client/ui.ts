@@ -77,6 +77,17 @@ export function drawPlayersInPrompt() {
   });
 }
 
+export function drawPageNumberInSubmittingPrompts() {
+  const gameState = getGameState();
+  const heading = document.getElementById('submitting-prompts-heading') as HTMLHeadingElement;
+  const promptInput = document.getElementById('prompt-input') as HTMLInputElement;
+  const promptInputLabel = document.getElementById('prompt-input-label');
+
+  heading.innerText = `What do you want to say on page ${gameState.currentPage + 1}?`;
+  promptInput.value = '';
+  promptInputLabel.innerText = `Page ${gameState.currentPage + 1} should say:`;
+}
+
 export function drawPlayersInVoting() {
   const players = getGameState().players;
   const lobbyEl = document.getElementById('voting-players-list');
@@ -107,6 +118,11 @@ export function drawPromptsInVoting() {
   const gameState = getGameState();
   const prompts = gameState.prompts;
   const promptsContainer = document.getElementById('prompt-voting-list');
+  promptsContainer.innerHTML = '';
+  const heading = document.createElement('h4');
+  heading.innerText = `Choose the best sentence for page ${gameState.currentPage + 1}`;
+  promptsContainer.appendChild(heading);
+
   prompts.forEach((prompt) => {
     const el = document.createElement('div');
     el.dataset['userid'] = prompt.userId;
