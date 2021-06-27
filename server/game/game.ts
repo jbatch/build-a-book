@@ -61,6 +61,7 @@ export default class Game {
 
   handleClientHostUpdateSettings(socket: SafeSocket, clientHostUpdateSettings: ClientHostUpdateSettings) {}
   handleClientHostStart(socket: SafeSocket, clientHostStart: ClientHostStart) {
+    logger.info(`Host started game in room ${this.room}`);
     this.currentPrompt = undefined;
     this.prompts = [];
     Object.values(this.players).map((p) => (p.actionPending = true));

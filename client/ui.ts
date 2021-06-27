@@ -1,5 +1,5 @@
 import { getGameState } from './game-state';
-import { sendHostStartMessage } from './network';
+import { sendClientJoinMessage, sendHostStartMessage } from './network';
 
 export enum SCREENS {
   HOME,
@@ -15,8 +15,14 @@ const screens = {
 
 export function initUi() {
   // set up event handlers for button clicks, etc
+  const usernameInput = document.getElementById('username') as HTMLInputElement;
+  const playBtn = document.getElementById('play-btn');
+  const hostPrivateGameButton = document.getElementById('host-private-game-btn');
   const inviteBtn = document.getElementById('invite-btn');
   const startBtn = document.getElementById('start-btn');
+
+  playBtn.addEventListener('click', () => sendClientJoinMessage(usernameInput.value, 'AAAA'));
+  hostPrivateGameButton.addEventListener('click', () => sendClientJoinMessage(usernameInput.value, 'AAAA'));
   startBtn.addEventListener('click', sendHostStartMessage);
 }
 

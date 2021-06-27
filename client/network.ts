@@ -2,6 +2,10 @@ import { debounce } from 'throttle-debounce';
 import { getPlayerCanvas } from './canvas';
 import { safeEmit } from './sockets';
 
+export function sendClientJoinMessage(username: string, room: string) {
+  safeEmit('client-join', { username, room });
+}
+
 export function sendPlayerCanvas() {
   const playerCanvas = getPlayerCanvas();
   const playerImgStr = playerCanvas.toDataURL();

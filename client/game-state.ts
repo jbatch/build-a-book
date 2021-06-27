@@ -30,9 +30,7 @@ function processBackgroundUpdate(backgroundStr: string) {
 }
 
 function processServerRoomState(roomState: ServerRoomState) {
-  if (roomState.status === 'lobby') {
-    gameState.players = roomState.players;
-  }
+  gameState.players = roomState.players;
 }
 
 function processCursorsUpdate(cursors: Array<any>) {

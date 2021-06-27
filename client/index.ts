@@ -3,25 +3,29 @@ import { initCanvas, getCanvas, startRenderInterval } from './canvas';
 import { initInputHandlers } from './input';
 import { processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
 import { initDrawingTools } from './drawing-tools';
-import { drawPlayersInLobby, SCREENS, showScreen } from './ui';
+import { drawPlayersInLobby, SCREENS, showScreen, initUi } from './ui';
+import { sendClientJoinMessage } from './network';
 
 const socket = initialiseSocket();
 
 function init() {
+  initUi();
   initCanvas();
   initInputHandlers();
   initDrawingTools();
   startRenderInterval();
-  showScreen(SCREENS.GAME);
+  showScreen(SCREENS.HOME);
   drawPlayersInLobby();
 
   socket.on('connect', () => {
     const playerName = 'Player ' + Math.floor(Math.random() * 100);
-    safeEmit('client-join', { username: playerName, room: 'AAAA' });
+    // sendClientJoinMessage(playerName, 'AAAA');
   });
   safeOn('server-room-state', (serverRoomState) => {
+    console.log('Got server-room-state', { state: serverRoomState });
     processServerRoomState(serverRoomState);
     if (serverRoomState.status === 'lobby') {
+      showScreen(SCREENS.LOBBY);
       drawPlayersInLobby();
     }
   });
