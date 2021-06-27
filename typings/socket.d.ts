@@ -27,6 +27,7 @@ type ServerRoomState = {
   status: 'lobby' | 'submitting-prompts' | 'voting' | 'drawing' | 'end';
   prompts?: Array<Prompt>;
   currentPrompt?: Prompt;
+  timeRemaining?: number;
 };
 type ServerUpdateCursors = {
   t: number;

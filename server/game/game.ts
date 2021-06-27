@@ -14,6 +14,8 @@ export default class Game {
   status: RoomStatus;
   prompts?: Array<Prompt>;
   currentPrompt?: Prompt;
+  timeRemaining: number;
+  timer?: ReturnType<typeof setInterval>;
   canvas: Canvas;
   canvasCtx: CanvasRenderingContext2D;
   sockets: { [id: string]: SafeSocket };
@@ -26,6 +28,8 @@ export default class Game {
     this.status = 'lobby';
     this.prompts = [];
     this.currentPrompt = undefined;
+    this.timeRemaining = 0;
+    this.timer = undefined;
     this.canvas = createCanvas(800, 450);
     this.canvasCtx = this.canvas.getContext('2d');
 
@@ -82,7 +86,17 @@ export default class Game {
       this.status = 'drawing';
       this.prompts = [];
       this.currentPrompt = this._getWinningPrompt();
+      this.timeRemaining = 60;
+      this.timer = setInterval(() => {
+        this.timeRemaining--;
+        if (this.timeRemaining === -1) {
+          clearInterval(this.timer);
+          this.status = 'end'; // TODO (add pages and loop back t submitting prompts)
+        }
+        this.broadcastRoomState(socket);
+      }, 1000);
     }
+    this.broadcastRoomState(socket);
   }
 
   removePlayer(socket: SafeSocket) {
@@ -140,7 +154,7 @@ export default class Game {
       case 'voting':
         return { ...requiredFields, prompts: this.prompts };
       case 'drawing':
-        return { ...requiredFields, currentPrompt: this.currentPrompt };
+        return { ...requiredFields, currentPrompt: this.currentPrompt, timeRemaining: this.timeRemaining };
       default:
         break;
     }
