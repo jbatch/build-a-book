@@ -4,7 +4,15 @@ import { getGameState, processBackgroundUpdate, processCursorsUpdate, processSer
 import { initInputHandlers } from './input';
 import { initialiseSocket, safeOn } from './sockets';
 import { sendClientJoinMessage } from './network';
-import { drawPlayersInLobby, drawPlayersInPrompt, SCREENS, initUi, showScreen, drawPlayersInVoting } from './ui';
+import {
+  drawPlayersInLobby,
+  drawPlayersInPrompt,
+  SCREENS,
+  initUi,
+  showScreen,
+  drawPlayersInVoting,
+  addVotingEventHandlers,
+} from './ui';
 
 const socket = initialiseSocket();
 
@@ -31,6 +39,12 @@ function init() {
 
     if (serverRoomState.status === 'lobby') {
       drawPlayersInLobby();
+    } else if (serverRoomState.status === 'submitting-prompts') {
+      drawPlayersInPrompt();
+    } else if (serverRoomState.status === 'voting') {
+      drawPlayersInVoting();
+      // drawPromptsInVoting();
+      addVotingEventHandlers();
     }
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {

@@ -69,7 +69,10 @@ export function drawPlayersInPrompt() {
     const el = document.createElement('div');
     el.classList.add('row');
     el.innerHTML = `<a class="btn-floating"><i class="material-icons">person</i></a><span class="ml2"></span>`;
-    el.querySelector('span').innerText = player.username;
+    const waitingStr = player.actionPending ? ' (waiting...)' : '';
+    el.querySelector('span').innerText = player.username + waitingStr;
+    if (player.actionPending) el.querySelector('.btn-floating').classList.add('disabled');
+
     lobbyEl.appendChild(el);
   });
 }
@@ -83,12 +86,14 @@ export function drawPlayersInVoting() {
     const el = document.createElement('div');
     el.classList.add('row');
     el.innerHTML = `<a class="btn-floating"><i class="material-icons">person</i></a><span class="ml2"></span>`;
-    el.querySelector('span').innerText = player.username;
+    const waitingStr = player.actionPending ? ' (waiting...)' : '';
+    el.querySelector('span').innerText = player.username + waitingStr;
+    if (player.actionPending) el.querySelector('.btn-floating').classList.add('disabled');
     lobbyEl.appendChild(el);
   });
 }
 
-function addVotingEventHandlers() {
+export function addVotingEventHandlers() {
   const votingEls = document.querySelectorAll('#prompt-voting-list .row');
   console.log({ votingEls });
   votingEls.forEach((el: HTMLDivElement) =>
