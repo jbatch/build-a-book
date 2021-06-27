@@ -6,6 +6,7 @@ export type GameState = {
   cursors: Array<PlayerState>;
   background: HTMLImageElement;
   oldBackgroundString: string;
+  currentPrompt: Prompt;
   dirty: boolean;
 };
 let gameState: GameState = {
@@ -15,6 +16,7 @@ let gameState: GameState = {
   cursors: [],
   background: null,
   oldBackgroundString: '',
+  currentPrompt: null,
   dirty: false,
 };
 
@@ -39,6 +41,11 @@ function processServerRoomState(roomState: ServerRoomState) {
   if (roomState.prompts) {
     gameState.prompts = roomState.prompts;
   }
+
+  if (roomState.currentPrompt) {
+    gameState.currentPrompt = roomState.currentPrompt;
+  }
+
   switch (roomState.status) {
     case 'lobby':
       gameState.currentScreen = SCREENS.LOBBY;

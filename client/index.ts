@@ -4,14 +4,15 @@ import { getGameState, processBackgroundUpdate, processCursorsUpdate, processSer
 import { initInputHandlers } from './input';
 import { initialiseSocket, safeOn } from './sockets';
 import {
-  addVotingEventHandlers,
   drawPlayersInLobby,
   drawPlayersInPrompt,
-  drawPlayersInVoting,
   drawPromptsInVoting,
   initUi,
   SCREENS,
   showScreen,
+  drawPlayersInVoting,
+  addVotingEventHandlers,
+  addPromptToDrawing,
 } from './ui';
 
 const socket = initialiseSocket();
@@ -45,6 +46,8 @@ function init() {
       drawPlayersInVoting();
       drawPromptsInVoting();
       addVotingEventHandlers();
+    } else if (serverRoomState.status === 'drawing') {
+      addPromptToDrawing();
     }
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {

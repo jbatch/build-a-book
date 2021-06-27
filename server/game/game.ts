@@ -85,8 +85,8 @@ export default class Game {
     player.actionPending = false;
     if (Object.values(this.players).every((p) => !p.actionPending)) {
       this.status = 'drawing';
-      this.prompts = [];
       this.currentPrompt = this._getWinningPrompt();
+      this.prompts = [];
       this.timeRemaining = 60;
       this.timer = setInterval(() => {
         this.timeRemaining--;

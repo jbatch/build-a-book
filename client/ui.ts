@@ -117,3 +117,10 @@ export function drawPromptsInVoting() {
     promptsContainer.appendChild(el);
   });
 }
+
+export function addPromptToDrawing() {
+  const state = getGameState();
+  if (state.currentScreen !== SCREENS.GAME) return;
+  const promptEl = document.querySelector('#drawing-prompt') as HTMLHeadingElement;
+  promptEl.innerText = `"${state.currentPrompt.prompt}"`;
+}
