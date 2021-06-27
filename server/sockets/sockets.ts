@@ -23,6 +23,7 @@ export function configureSockets(appServer: http.Server, game: Game) {
     safeSocket.safeOn('disconnect', handleClientDisconnect);
     safeSocket.safeOn('client-location', handleClientLocation);
     safeSocket.safeOn('client-draw', handleClientDraw);
+    safeSocket.safeOn('client-canvas-reset', handleClientCanvasReset);
 
     function handleClientJoin({ username, room }: ClientJoin) {
       logger.info(`${client.id} (${username}) joining game. Room: ${room}`);
@@ -58,6 +59,10 @@ export function configureSockets(appServer: http.Server, game: Game) {
     function handleClientDraw(input: ClientDraw) {
       // logger.info("Got [handleClientDraw]: %o", input)
       game.handleDrawImage(safeSocket, input);
+    }
+
+    function handleClientCanvasReset() {
+      game.handleClientCanvasReset(safeSocket);
     }
   });
 }

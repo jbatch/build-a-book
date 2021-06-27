@@ -79,6 +79,11 @@ export default class Game {
     img.src = imageData;
   }
 
+  handleClientCanvasReset(socket: SafeSocket) {
+    this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    socket.safeBroadcast('server-update-background', { backgroundImage: this.canvas.toDataURL() });
+  }
+
   update() {
     // Calculate time elapsed
     const now = Date.now();

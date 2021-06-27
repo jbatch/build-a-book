@@ -6,18 +6,75 @@ body,
 
 .main {
   margin-top: 4em;
+  min-height: calc(450px + 2em);
 }
 
-#game-canvas, #player-canvas {
+#game-canvas,
+#player-canvas {
   border: 1px solid black;
 }
 
-.canvas-container { 
+.canvas-container {
   position: relative;
+}
+.canvas-tools {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 800px;
+}
+.reset-controls {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 800px;
 }
 
 .canvas-container canvas {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.btn-floating i.circle-sml {
+  font-size: 0.6em;
+}
+.btn-floating i.circle-med {
+  font-size: 1.2em;
+}
+.btn-floating i.circle-lrg {
+  font-size: 1.8em;
+}
+.btn-floating i.circle-xlg {
+  font-size: 2.4em;
+}
+
+.btn-floating i.swatch-red {
+  color: red;
+}
+.btn-floating i.swatch-orange {
+  color: orange;
+}
+.btn-floating i.swatch-yellow {
+  color: yellow;
+}
+.btn-floating i.swatch-green {
+  color: green;
+}
+.btn-floating i.swatch-blue {
+  color: blue;
+}
+.btn-floating i.swatch-indigo {
+  color: indigo;
+}
+.btn-floating i.swatch-violet {
+  color: violet;
+}
+.btn-floating i.swatch-brown {
+  color: brown;
+}
+.btn-floating i.swatch-black {
+  color: black;
+}
+.btn-floating i.swatch-white {
+  color: white;
 }

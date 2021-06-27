@@ -2,6 +2,7 @@ import { debounce } from 'throttle-debounce';
 
 import { GameState, getGameState } from './game-state';
 import { getMousePos } from './input';
+import { getCurrentColor, getCurrentSize } from './local-storage';
 
 const FPS = 60;
 const height = 450;
@@ -87,8 +88,8 @@ function drawPlayer(startX: number, startY: number, endX: number, endY: number) 
   playerCtx.beginPath();
   playerCtx.moveTo(startX, startY);
   playerCtx.lineTo(endX, endY);
-  playerCtx.strokeStyle = (window as any).player?.color || 'red';
-  playerCtx.lineWidth = 5;
+  playerCtx.strokeStyle = getCurrentColor() || 'red';
+  playerCtx.lineWidth = getCurrentSize() || 5;
   playerCtx.lineCap = 'round';
   playerCtx.stroke();
 }

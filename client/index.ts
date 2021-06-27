@@ -2,12 +2,14 @@ import { initialiseSocket, safeOn, safeEmit } from './sockets';
 import { initCanvas, getCanvas, startRenderInterval } from './canvas';
 import { initInputHandlers } from './input';
 import { processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
+import { initDrawingTools } from './drawing-tools';
 
 const socket = initialiseSocket();
 
 function init() {
   initCanvas();
   initInputHandlers();
+  initDrawingTools();
   startRenderInterval();
 
   socket.on('connect', () => {

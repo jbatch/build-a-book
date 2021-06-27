@@ -8,10 +8,19 @@
     <meta name="description" content="G'day Messenger" />
     <link rel="apple-touch-icon" href="<%= htmlWebpackPlugin.options.PUBLIC_URL %>/logo_512x512.png" />
     <link rel="manifest" href="<%= htmlWebpackPlugin.options.PUBLIC_URL %>/manifest.json" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="<%= htmlWebpackPlugin.options.PUBLIC_URL %>/css/materialize.min.css"  media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="<%= htmlWebpackPlugin.options.PUBLIC_URL %>/css/styles.css"  media="screen,projection"/>
-    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="<%= htmlWebpackPlugin.options.PUBLIC_URL %>/css/materialize.min.css"
+      media="screen,projection"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="<%= htmlWebpackPlugin.options.PUBLIC_URL %>/css/styles.css"
+      media="screen,projection"
+    />
 
     <title>Build a Book</title>
   </head>
@@ -27,12 +36,35 @@
     <h2 class="center-align">"Once upon a time there lived a frog and a tiger"</h2>
 
     <div class="container">
-        <div class="main">
-          <div class="canvas-container">
-            <canvas  id="player-canvas"></canvas>
-            <canvas  id="game-canvas"></canvas>
-          </div>
+      <div class="main">
+        <div class="canvas-container">
+          <canvas id="player-canvas"></canvas>
+          <canvas id="game-canvas"></canvas>
         </div>
+      </div>
+      <div class="canvas-tools">
+        <div class="size-controls">
+          <a class="btn-floating"><i class="material-icons circle-sml">brightness_1</i></a>
+          <a class="btn-floating"><i class="material-icons circle-med">brightness_1</i></a>
+          <a class="btn-floating"><i class="material-icons circle-lrg">brightness_1</i></a>
+          <a class="btn-floating"><i class="material-icons circle-xlg">brightness_1</i></a>
+        </div>
+        <div class="color-controls">
+          <a class="btn-floating"><i class="material-icons swatch-red">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-orange">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-yellow">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-green">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-blue">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-indigo">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-violet">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-brown">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-black">brush</i></a>
+          <a class="btn-floating"><i class="material-icons swatch-white">brush</i></a>
+        </div>
+      </div>
+      <div class="reset-controls">
+        <a class="waves-effect waves-light btn">Reset</a>
+      </div>
     </div>
 
     <script type="text/javascript" src="js/materialize.min.js"></script>

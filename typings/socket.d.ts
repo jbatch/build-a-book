@@ -12,6 +12,7 @@ type ClientLocation = {
 type ClientDraw = {
   imageData: string; // Data URL of image to append to Canvas
 };
+type ClientCanvasReset = {};
 
 // Server
 type ServerWelcome = {
@@ -49,6 +50,7 @@ type SocketEvents = {
   disconnect: ClientDisconnect;
   'client-location': ClientLocation;
   'client-draw': ClientDraw;
+  'client-canvas-reset': ClientCanvasReset;
   // Sent by Server
   'server-welcome': ServerWelcome;
   'server-room-state': ServerRoomState;
