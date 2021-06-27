@@ -37,6 +37,18 @@ export default class Game {
     socket.safeEmit('server-welcome', { id: socket.id, color, backgroundImage: this.canvas.toDataURL() });
   }
 
+  handleClientHostUpdateSettings(socket: SafeSocket, clientHostUpdateSettings: ClientHostUpdateSettings) {}
+  handleClientHostStart(socket: SafeSocket, clientHostStart: ClientHostStart) {
+    socket.safeBroadcast('server-room-state', {
+      room: 'AAAA',
+      players: Object.entries(this.players).map(([_, player]) => player.serializeForUpdate()),
+      page: 0,
+      status: 'submitting-prompts',
+    });
+  }
+  handleClientSubmitPrompt(socket: SafeSocket, clientSubmitPrompt: ClientSubmitPrompt) {}
+  handleClientVotePrompt(socket: SafeSocket, clientVotePrompt: ClientVotePrompt) {}
+
   removePlayer(socket: SafeSocket) {
     delete this.sockets[socket.id];
     delete this.players[socket.id];
@@ -58,9 +70,8 @@ export default class Game {
     const img = new Image();
     img.onload = () => {
       this.canvasCtx.drawImage(img, 0, 0);
-      // Immediately broadcast new background to all clients
-      // TODO (JBatch): Swap to broadcasting to a room instead of the whole server later
-      socket.safeBroadcast('server-update-background', { backgroundImage: this.canvas.toDataURL() });
+      // Immediately broadcast new background to all clients in the same room
+      socket.safeRoomEmit('AAAA', 'server-update-background', { backgroundImage: this.canvas.toDataURL() });
     };
     img.onerror = (err) => {
       throw err;

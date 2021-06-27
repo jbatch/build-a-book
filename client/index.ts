@@ -1,7 +1,7 @@
 import { initialiseSocket, safeOn, safeEmit } from './sockets';
 import { initCanvas, getCanvas, startRenderInterval } from './canvas';
 import { initInputHandlers } from './input';
-import { processBackgroundUpdate, processCursorsUpdate } from './game-state';
+import { processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
 
 const socket = initialiseSocket();
 
@@ -12,7 +12,10 @@ function init() {
 
   socket.on('connect', () => {
     const playerName = 'Player ' + Math.floor(Math.random() * 100);
-    safeEmit('client-join', { username: playerName });
+    safeEmit('client-join', { username: playerName, room: 'AAAA' });
+  });
+  safeOn('server-room-state', (serverRoomState) => {
+    processServerRoomState(serverRoomState);
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {
     processCursorsUpdate(serverUpdateCursors.cursors);

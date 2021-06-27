@@ -16,15 +16,33 @@ export function configureSockets(appServer: http.Server, game: Game) {
 
     // Setup event listeners for client
     safeSocket.safeOn('client-join', handleClientJoin);
+    safeSocket.safeOn('client-host-settings-update', handleClientHostUpdateSettings);
+    safeSocket.safeOn('client-host-start', handleClientHostStart);
+    safeSocket.safeOn('client-submit-prompt', handleClientSubmitPrompt);
+    safeSocket.safeOn('client-vote-prompt', handleClientVotePrompt);
     safeSocket.safeOn('disconnect', handleClientDisconnect);
     safeSocket.safeOn('client-location', handleClientLocation);
     safeSocket.safeOn('client-draw', handleClientDraw);
 
-    function handleClientJoin({ username }: ClientJoin) {
-      logger.info(`${client.id} (${username}) joining game`);
+    function handleClientJoin({ username, room }: ClientJoin) {
+      logger.info(`${client.id} (${username}) joining game. Room: ${room}`);
       client.username = username;
+      safeSocket.join(room);
       // Put player in game.
       game.addPlayer(safeSocket, username);
+    }
+
+    function handleClientHostUpdateSettings(clientHostUpdateSettings: ClientHostUpdateSettings) {
+      game.handleClientHostUpdateSettings(safeSocket, clientHostUpdateSettings);
+    }
+    function handleClientHostStart(clientHostStart: ClientHostStart) {
+      game.handleClientHostStart(safeSocket, clientHostStart);
+    }
+    function handleClientSubmitPrompt(clientSubmitPrompt: ClientSubmitPrompt) {
+      game.handleClientSubmitPrompt(safeSocket, clientSubmitPrompt);
+    }
+    function handleClientVotePrompt(clientVotePrompt: ClientVotePrompt) {
+      game.handleClientVotePrompt(safeSocket, clientVotePrompt);
     }
 
     function handleClientDisconnect() {
@@ -38,6 +56,7 @@ export function configureSockets(appServer: http.Server, game: Game) {
     }
 
     function handleClientDraw(input: ClientDraw) {
+      // logger.info("Got [handleClientDraw]: %o", input)
       game.handleDrawImage(safeSocket, input);
     }
   });

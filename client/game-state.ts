@@ -27,6 +27,10 @@ function processBackgroundUpdate(backgroundStr: string) {
   }
 }
 
+function processServerRoomState(roomState: ServerRoomState) {
+  console.log('Got: server-room-state', { state: roomState });
+}
+
 function processCursorsUpdate(cursors: Array<any>) {
   gameState.cursors = cursors;
 }
@@ -35,4 +39,4 @@ function setBackgroundDirty(dirty: boolean) {
   gameState.dirty = dirty;
 }
 
-export { getGameState, processCursorsUpdate, processBackgroundUpdate };
+export { getGameState, processServerRoomState, processCursorsUpdate, processBackgroundUpdate };

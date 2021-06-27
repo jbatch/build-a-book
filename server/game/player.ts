@@ -4,12 +4,14 @@ export default class Player {
   color: string;
   x: number;
   y: number;
+  actionPending: boolean;
   constructor(id: string, username: string, color: string, x: number, y: number) {
     this.id = id;
     this.username = username;
     this.color = color;
     this.x;
     this.y;
+    this.actionPending = false;
   }
 
   update(dt: number) {}
@@ -21,6 +23,7 @@ export default class Player {
       color: this.color,
       x: this.x,
       y: this.y,
+      actionPending: this.actionPending,
     };
   }
 }
