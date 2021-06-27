@@ -7,6 +7,7 @@ export enum SCREENS {
   GAME,
   VOTING,
   PROMPTS,
+  END,
 }
 
 const screens = {
@@ -15,6 +16,7 @@ const screens = {
   [SCREENS.GAME]: '#screen-game',
   [SCREENS.VOTING]: '#screen-voting',
   [SCREENS.PROMPTS]: '#screen-prompts',
+  [SCREENS.END]: '#screen-end',
 };
 
 export function initUi() {
@@ -173,3 +175,5 @@ export function addSettingsUpdatedHandlers() {
   numPagesInput.addEventListener('blur', sendUpdatedSettings);
   drawTimeInput.addEventListener('blur', sendUpdatedSettings);
 }
+
+export function showFinalGif() {}

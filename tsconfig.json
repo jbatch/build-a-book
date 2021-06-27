@@ -11,7 +11,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
   "include": ["./client", "./server", "./typings"]
 }

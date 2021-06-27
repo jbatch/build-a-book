@@ -1,5 +1,6 @@
 import { clearBackgroundCanvas, clearPlayerCanvas, initCanvas, startRenderInterval } from './canvas';
 import { initDrawingTools } from './drawing-tools';
+import { createBookGif } from './export';
 import {
   clearCanvasState,
   getGameState,
@@ -75,6 +76,8 @@ function init() {
         clearPlayerCanvas();
         clearBackgroundCanvas();
       }
+    } else if (serverRoomState.status === 'end') {
+      createBookGif();
     }
   });
   safeOn('server-update-cursors', (serverUpdateCursors) => {

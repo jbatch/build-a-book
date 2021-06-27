@@ -4,6 +4,7 @@ export type GameState = {
   gameSettings: GameSettings;
   players: Array<PlayerState>;
   prompts: Array<Prompt>;
+  bookPages: Array<BookPage>;
   cursors: Array<PlayerState>;
   background: HTMLImageElement;
   oldBackgroundString: string;
@@ -18,6 +19,7 @@ let gameState: GameState = {
   players: [],
   prompts: [],
   cursors: [],
+  bookPages: [],
   background: null,
   oldBackgroundString: '',
   timeRemaining: 0,
@@ -53,6 +55,7 @@ function processServerRoomState(roomState: ServerRoomState) {
   if (roomState.prompts) gameState.prompts = roomState.prompts;
   if (roomState.currentPrompt) gameState.currentPrompt = roomState.currentPrompt;
   if (roomState.timeRemaining) gameState.timeRemaining = roomState.timeRemaining;
+  if (roomState.bookPages) gameState.bookPages = roomState.bookPages;
 
   switch (roomState.status) {
     case 'lobby':
