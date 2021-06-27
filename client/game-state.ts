@@ -2,6 +2,7 @@ import { SCREENS } from './ui';
 export type GameState = {
   currentScreen: SCREENS;
   players: Array<PlayerState>;
+  prompts: Array<Prompt>;
   cursors: Array<PlayerState>;
   background: HTMLImageElement;
   oldBackgroundString: string;
@@ -10,6 +11,7 @@ export type GameState = {
 let gameState: GameState = {
   currentScreen: SCREENS.HOME,
   players: [],
+  prompts: [],
   cursors: [],
   background: null,
   oldBackgroundString: '',
@@ -34,6 +36,9 @@ function processBackgroundUpdate(backgroundStr: string) {
 
 function processServerRoomState(roomState: ServerRoomState) {
   gameState.players = roomState.players;
+  if (roomState.prompts) {
+    gameState.prompts = roomState.prompts;
+  }
   switch (roomState.status) {
     case 'lobby':
       gameState.currentScreen = SCREENS.LOBBY;

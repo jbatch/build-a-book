@@ -3,15 +3,15 @@ import { initDrawingTools } from './drawing-tools';
 import { getGameState, processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
 import { initInputHandlers } from './input';
 import { initialiseSocket, safeOn } from './sockets';
-import { sendClientJoinMessage } from './network';
 import {
+  addVotingEventHandlers,
   drawPlayersInLobby,
   drawPlayersInPrompt,
-  SCREENS,
-  initUi,
-  showScreen,
   drawPlayersInVoting,
-  addVotingEventHandlers,
+  drawPromptsInVoting,
+  initUi,
+  SCREENS,
+  showScreen,
 } from './ui';
 
 const socket = initialiseSocket();
@@ -43,7 +43,7 @@ function init() {
       drawPlayersInPrompt();
     } else if (serverRoomState.status === 'voting') {
       drawPlayersInVoting();
-      // drawPromptsInVoting();
+      drawPromptsInVoting();
       addVotingEventHandlers();
     }
   });

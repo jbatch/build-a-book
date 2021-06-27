@@ -103,3 +103,17 @@ export function addVotingEventHandlers() {
     })
   );
 }
+
+export function drawPromptsInVoting() {
+  const gameState = getGameState();
+  const prompts = gameState.prompts;
+  const promptsContainer = document.getElementById('prompt-voting-list');
+  prompts.forEach((prompt) => {
+    const el = document.createElement('div');
+    el.dataset['userid'] = prompt.userId;
+    el.classList.add('row');
+    el.innerHTML = `<div class="col s6 offset-s2 card grey lighten-4"><div class="card-content center-align"><h6></h6></div></div>`;
+    el.querySelector('h6').innerText = prompt.prompt;
+    promptsContainer.appendChild(el);
+  });
+}
