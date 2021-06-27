@@ -96,12 +96,15 @@ export default class Game {
     const votedForPrompt = this.prompts.find((p) => (p.userId = userId));
     votedForPrompt.votes++;
     const player = this._findPlayer(socket);
+    if (!player) {
+      return; // Return to avoid crashing server if player disconnected before message got processed.
+    }
     player.actionPending = false;
     if (Object.values(this.players).every((p) => !p.actionPending)) {
       this.status = 'drawing';
       this.currentPrompt = this._getWinningPrompt();
       this.prompts = [];
-      this.timeRemaining = 60;
+      this.timeRemaining = this.gameSettings.drawingTime;
       this.timer = setInterval(() => {
         this.timeRemaining--;
         if (this.timeRemaining === -1) {
