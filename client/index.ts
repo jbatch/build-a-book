@@ -3,8 +3,8 @@ import { initCanvas, getCanvas, startRenderInterval } from './canvas';
 import { initInputHandlers } from './input';
 import { processBackgroundUpdate, processCursorsUpdate, processServerRoomState } from './game-state';
 import { initDrawingTools } from './drawing-tools';
-import { drawPlayersInLobby, SCREENS, showScreen, initUi } from './ui';
 import { sendClientJoinMessage } from './network';
+import { drawPlayersInLobby, drawPlayersInPrompt, SCREENS,initUi, showScreen } from './ui';
 
 const socket = initialiseSocket();
 
@@ -14,7 +14,11 @@ function init() {
   initInputHandlers();
   initDrawingTools();
   startRenderInterval();
+<<<<<<< HEAD
   showScreen(SCREENS.HOME);
+=======
+  showScreen(SCREENS.VOTING);
+>>>>>>> Adds basic prompts and voting screens
   drawPlayersInLobby();
 
   socket.on('connect', () => {
