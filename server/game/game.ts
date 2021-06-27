@@ -156,7 +156,7 @@ export default class Game {
     img.onload = () => {
       this.canvasCtx.drawImage(img, 0, 0);
       // Immediately broadcast new background to all clients in the same room
-      socket.safeRoomEmit('AAAA', 'server-update-background', { backgroundImage: this.canvas.toDataURL() });
+      socket.safeRoomEmit(this.room, 'server-update-background', { backgroundImage: this.canvas.toDataURL() });
     };
     img.onerror = (err) => {
       throw err;
