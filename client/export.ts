@@ -5,7 +5,6 @@ import { getGameState } from './game-state';
 import { drawPlayersInPrompt, showFinalGif } from './ui';
 
 const gifExporter = require('./lib/gifExporter');
-console.log({ gifExporter });
 const defaultBookPages = [
   {
     prompt: {
@@ -30,7 +29,6 @@ const defaultBookPages = [
 export async function createBookGif() {
   const state = getGameState();
   const bookPages = state.bookPages.length ? state.bookPages : defaultBookPages;
-  console.log(bookPages);
   const drawingCanvas = getCanvas();
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -54,7 +52,6 @@ export async function createBookGif() {
   const gif = new gifExporter({
     workerPath: 'js/Animated_GIF.worker.min.js',
   });
-  console.log({ gif });
   gif.setSize(canvas.width, canvas.height);
   gif.setDelay(2000);
   gif.onRenderProgress((progress: number) => {

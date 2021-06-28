@@ -99,6 +99,16 @@ export function drawPageNumberInSubmittingPrompts() {
   promptInputLabel.innerText = `Page ${gameState.currentPage + 1} should say:`;
 }
 
+export function setSubmitEnabledSubmittingPrompts() {
+  const gameState = getGameState();
+  const submitBtn = document.getElementById('submit-prompt-btn') as HTMLButtonElement;
+  const player = gameState.players.find((p) => p.id === (window as any).player?.id);
+  if (!player) return;
+
+  if (player.actionPending) submitBtn.classList.remove('disabled');
+  else submitBtn.classList.add('disabled');
+}
+
 export function drawPlayersInVoting() {
   const players = getGameState().players;
   const lobbyEl = document.getElementById('voting-players-list');
@@ -121,6 +131,12 @@ export function addVotingEventHandlers() {
     el.addEventListener('click', () => {
       const userId = el.dataset['userid'];
       if (userId) sendPromptVote(userId);
+
+      // Hightlight the selected prompt (it'll get blown away the next time this
+      // screen renders, so we don't need to clean this up)
+      const cardEl = el.querySelector('.card') as HTMLDivElement;
+      // weirdly, we apply a lighten class to darken our element to "highlight" it? 😂
+      cardEl.classList.add('lighten-2');
     })
   );
 }
