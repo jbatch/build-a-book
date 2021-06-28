@@ -31,4 +31,6 @@ type RoomStatus = ServerRoomState['status'];
 type GameSettings = {
   drawingTime: number;
   pages: number;
+  fontColor: string;
+  backgroundColor: string;
 };

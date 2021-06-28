@@ -20,11 +20,10 @@ export async function createBookGif() {
   // document.body.appendChild(canvas);
 
   async function drawPageToCanvas(page: BookPage) {
+    const gameState = getGameState();
     const img = await createImageFromStr(page.imgStr);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    printPromptToCanvas(page.prompt.prompt, ctx);
     ctx.drawImage(img, 0, 0);
-    printPromptToCanvas(page.prompt.prompt, ctx, false);
   }
 
   const gif = new gifExporter({

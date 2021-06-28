@@ -45,6 +45,8 @@ export default class Game {
     this.gameSettings = {
       drawingTime: 60,
       pages: 10,
+      fontColor: '#00ff00',
+      backgroundColor: '#ffffff',
     };
     this.lastUpdatedTime = Date.now();
     this.shouldSendUpdate = false;

@@ -15,7 +15,7 @@ export type GameState = {
 };
 let gameState: GameState = {
   currentScreen: SCREENS.HOME,
-  gameSettings: { drawingTime: 60, pages: 5 },
+  gameSettings: { drawingTime: 60, pages: 5, fontColor: '#00ff00', backgroundColor: '#ffffff' },
   players: [],
   prompts: [],
   cursors: [],

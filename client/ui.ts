@@ -194,28 +194,39 @@ export function drawUpdatedSettings() {
   const gameSettings = getGameState().gameSettings;
   const numPagesInput = document.getElementById('num_pages') as HTMLInputElement;
   const drawTimeInput = document.getElementById('draw_time') as HTMLInputElement;
+  const fontColorPicker = document.getElementById('font-color-picker') as HTMLInputElement;
+  const backgroundColorPicker = document.getElementById('background-color-picker') as HTMLInputElement;
 
   numPagesInput.value = String(gameSettings.pages);
   drawTimeInput.value = String(gameSettings.drawingTime);
+  fontColorPicker.value = String(gameSettings.fontColor);
+  backgroundColorPicker.value = String(gameSettings.backgroundColor);
 }
 
 export function addSettingsUpdatedHandlers() {
   const numPagesInput = document.getElementById('num_pages') as HTMLInputElement;
   const drawTimeInput = document.getElementById('draw_time') as HTMLInputElement;
+  const fontColorPicker = document.getElementById('font-color-picker') as HTMLInputElement;
+  const backgroundColorPicker = document.getElementById('background-color-picker') as HTMLInputElement;
 
   const sendUpdatedSettings = () => {
     const pages = numPagesInput.value;
     const drawingTime = drawTimeInput.value;
+    const fontColor = fontColorPicker.value;
+    const backgroundColor = backgroundColorPicker.value;
+
     // Check values are valid
     // TODO Add min/max bounds to these numbers
     if (isNaN(parseInt(pages)) || isNaN(parseInt(drawingTime))) {
       // Don't update settings with invalid values
       return;
     }
-    sendUpdateSettings({ pages: Number(pages), drawingTime: Number(drawingTime) });
+    sendUpdateSettings({ pages: Number(pages), drawingTime: Number(drawingTime), fontColor, backgroundColor });
   };
   numPagesInput.addEventListener('blur', sendUpdatedSettings);
   drawTimeInput.addEventListener('blur', sendUpdatedSettings);
+  fontColorPicker.addEventListener('change', sendUpdatedSettings);
+  backgroundColorPicker.addEventListener('change', sendUpdatedSettings);
 }
 
 export function addCopyInviteLinkHandlers(roomCode: string) {

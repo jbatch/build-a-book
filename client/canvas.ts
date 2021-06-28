@@ -105,7 +105,7 @@ function drawPlayer(startX: number, startY: number, endX: number, endY: number) 
 }
 
 export function writePromptToPreviewCanvas(prompt: string) {
-  printPromptToCanvas(prompt, previewCanvas.getContext('2d'), true);
+  printPromptToCanvas(prompt, previewCanvas.getContext('2d'));
 }
 
 export {
