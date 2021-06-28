@@ -38,13 +38,6 @@ export function initUi() {
   submitPromptBtn.addEventListener('click', () => {
     sendPrompt(promptInput.value);
   });
-  inviteBtn.addEventListener('click', () => {
-    copy(`${window.location.origin}?roomId=${roomIdParam}`);
-    inviteBtn.innerText = 'Copied!';
-    setTimeout(() => {
-      inviteBtn.innerText = 'Copy Invite Link';
-    }, 3000);
-  });
   usernameInput.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Enter') sendClientJoinMessage(usernameInput.value);
   });
@@ -190,6 +183,20 @@ export function addSettingsUpdatedHandlers() {
   };
   numPagesInput.addEventListener('blur', sendUpdatedSettings);
   drawTimeInput.addEventListener('blur', sendUpdatedSettings);
+}
+
+export function addCopyInviteLinkHandlers(roomCode: string) {
+  const inviteBtn = document.getElementById('invite-btn');
+
+  inviteBtn.addEventListener('click', () => {
+    copy(`${window.location.origin}?roomId=${roomCode}`);
+
+    inviteBtn.innerText = 'Copied!';
+
+    setTimeout(() => {
+      inviteBtn.innerText = 'Copy Invite Link';
+    }, 3000);
+  });
 }
 
 export function showFinalGif() {}

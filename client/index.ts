@@ -25,6 +25,7 @@ import {
   drawUpdatedSettings,
   addSettingsUpdatedHandlers,
   drawPageNumberInSubmittingPrompts,
+  addCopyInviteLinkHandlers,
 } from './ui';
 
 const socket = initialiseSocket();
@@ -56,6 +57,7 @@ function init() {
       drawPlayersInLobby();
       drawUpdatedSettings();
       if (changedScreen) {
+        addCopyInviteLinkHandlers(serverRoomState.room);
         addSettingsUpdatedHandlers();
       }
     } else if (serverRoomState.status === 'submitting-prompts') {
