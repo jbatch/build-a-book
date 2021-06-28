@@ -10,7 +10,8 @@ body,
 }
 
 #game-canvas,
-#player-canvas {
+#player-canvas,
+#prompt-preview-canvas {
   border: 1px solid black;
 }
 

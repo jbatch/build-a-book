@@ -3,22 +3,26 @@ import { debounce } from 'throttle-debounce';
 import { GameState, getGameState } from './game-state';
 import { getMousePos } from './input';
 import { getCurrentColor, getCurrentSize } from './local-storage';
+import { printPromptToCanvas } from './page-printer';
 
 const FPS = 60;
 const height = 450;
 const width = 800;
 
 let canvas: HTMLCanvasElement;
-let ctx: CanvasRenderingContext2D;
-let renderInterval: ReturnType<typeof setInterval>;
-
 let playerCanvas: HTMLCanvasElement;
+let previewCanvas: HTMLCanvasElement;
+
+let ctx: CanvasRenderingContext2D;
 let playerCtx: CanvasRenderingContext2D;
+
+let renderInterval: ReturnType<typeof setInterval>;
 
 function initCanvas() {
   canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
-  ctx = canvas.getContext('2d');
   playerCanvas = document.getElementById('player-canvas') as HTMLCanvasElement;
+  previewCanvas = document.getElementById('prompt-preview-canvas') as HTMLCanvasElement;
+  ctx = canvas.getContext('2d');
   playerCtx = playerCanvas.getContext('2d');
 
   resizeCanvas();
@@ -30,6 +34,8 @@ function resizeCanvas() {
   canvas.width = width;
   playerCanvas.height = height;
   playerCanvas.width = width;
+  previewCanvas.height = height;
+  previewCanvas.width = width;
 }
 
 function drawAll() {
@@ -96,6 +102,10 @@ function drawPlayer(startX: number, startY: number, endX: number, endY: number) 
   playerCtx.lineWidth = getCurrentSize() || 5;
   playerCtx.lineCap = 'round';
   playerCtx.stroke();
+}
+
+export function writePromptToPreviewCanvas(prompt: string) {
+  printPromptToCanvas(prompt, previewCanvas.getContext('2d'), true);
 }
 
 export {

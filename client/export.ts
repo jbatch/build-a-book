@@ -2,6 +2,7 @@ import fileSaver from 'file-saver';
 
 import { getCanvas } from './canvas';
 import { getGameState } from './game-state';
+import { printPromptToCanvas } from './page-printer';
 import { drawPlayersInPrompt, showFinalGif } from './ui';
 
 const gifExporter = require('./lib/gifExporter');
@@ -41,12 +42,9 @@ export async function createBookGif() {
   async function drawPageToCanvas(page: BookPage) {
     const img = await createImageFromStr(page.imgStr);
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.drawImage(img, 0, 0);
-    ctx.textAlign = 'center';
-    ctx.font = '48px serif';
-    ctx.fillStyle = '#00ff00';
-    ctx.fillText(page.prompt.prompt, canvas.width / 2, canvas.height - 30);
+    printPromptToCanvas(page.prompt.prompt, ctx, false);
   }
 
   const gif = new gifExporter({

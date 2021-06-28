@@ -1,6 +1,7 @@
 import { getGameState, GameState } from './game-state';
 import { sendClientJoinMessage, sendHostStartMessage, sendPrompt, sendPromptVote, sendUpdateSettings } from './network';
 import copy from 'copy-to-clipboard';
+import { writePromptToPreviewCanvas } from './canvas';
 
 export enum SCREENS {
   HOME,
@@ -43,6 +44,10 @@ export function initUi() {
   });
   promptInput.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'Enter') sendPrompt(promptInput.value);
+  });
+  promptInput.addEventListener('keyup', () => {
+    const prompt = promptInput.value;
+    writePromptToPreviewCanvas(prompt);
   });
   if (roomIdParam) hostPrivateGameButton.innerText = 'Join game';
 }
