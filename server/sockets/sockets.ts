@@ -24,6 +24,7 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
     safeSocket.safeOn('client-location', handleClientLocation);
     safeSocket.safeOn('client-draw', handleClientDraw);
     safeSocket.safeOn('client-canvas-reset', handleClientCanvasReset);
+    safeSocket.safeOn('client-end-round', handleClientEndRound);
 
     function handleClientJoin({ username, room }: ClientJoin) {
       logger.info(`${client.id} (${username}) joining game. Room: ${room}`);
@@ -79,6 +80,11 @@ export function configureSockets(appServer: http.Server, roomManager: RoomManage
     function handleClientCanvasReset() {
       const game = roomManager.findGameForSocket(safeSocket);
       game.handleClientCanvasReset(safeSocket);
+    }
+
+    function handleClientEndRound() {
+      const game = roomManager.findGameForSocket(safeSocket);
+      game.handleClientEndRound(safeSocket);
     }
   });
 }

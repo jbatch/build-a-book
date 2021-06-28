@@ -110,27 +110,36 @@ export default class Game {
       this.currentPrompt = this._getWinningPrompt();
       this.prompts = [];
       this.timeRemaining = this.gameSettings.drawingTime;
-      this.timer = setInterval(() => {
-        this.timeRemaining--;
-        if (this.timeRemaining === -1) {
-          clearInterval(this.timer);
-          const newBookPage: BookPage = { prompt: this.currentPrompt, imgStr: this.canvas.toDataURL() };
-          this.bookPages.push(newBookPage);
-          this.canvas = createCanvas(800, 450);
-          this.canvasCtx = this.canvas.getContext('2d');
-          this.page++;
-          if (this.page === this.gameSettings.pages) {
-            this.status = 'end';
-            // Send back end state with all pages in it.
-          } else {
-            // Still move pages to create.
-            this.status = 'submitting-prompts';
+
+      // if the drawing time is -1 then don't start a timer
+      if (this.gameSettings.drawingTime !== -1) {
+        this.timer = setInterval(() => {
+          this.timeRemaining--;
+          if (this.timeRemaining === -1) {
+            clearInterval(this.timer);
+            this.addPageAndTransitionState();
           }
-        }
-        this.broadcastRoomState(socket);
-      }, 1000);
+          this.broadcastRoomState(socket);
+        }, 1000);
+      }
     }
     this.broadcastRoomState(socket);
+  }
+
+  // saves the state of the current canvas as a page and transitions the game state
+  addPageAndTransitionState() {
+    const newBookPage: BookPage = { prompt: this.currentPrompt, imgStr: this.canvas.toDataURL() };
+    this.bookPages.push(newBookPage);
+    this.canvas = createCanvas(800, 450);
+    this.canvasCtx = this.canvas.getContext('2d');
+    this.page++;
+    if (this.page === this.gameSettings.pages) {
+      // Send back end state with all pages in it.
+      this.status = 'end';
+    } else {
+      // Still move pages to create.
+      this.status = 'submitting-prompts';
+    }
   }
 
   removePlayer(socket: SafeSocket) {
@@ -167,6 +176,11 @@ export default class Game {
   handleClientCanvasReset(socket: SafeSocket) {
     this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     socket.safeBroadcast('server-update-background', { backgroundImage: this.canvas.toDataURL() });
+  }
+
+  handleClientEndRound(socket: SafeSocket) {
+    this.addPageAndTransitionState();
+    this.broadcastRoomState(socket);
   }
 
   broadcastRoomState(socket: SafeSocket) {

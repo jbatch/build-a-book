@@ -43,6 +43,9 @@ export function sendPrompt(prompt: string) {
 export function sendPromptVote(userId: string) {
   safeEmit('client-vote-prompt', { userId });
 }
+export function sendEndRound() {
+  safeEmit('client-end-round');
+}
 
 function _sendPlayerCursor(endX: number, endY: number) {
   safeEmit('client-location', { endX, endY });

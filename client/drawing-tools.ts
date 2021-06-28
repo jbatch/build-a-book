@@ -1,5 +1,5 @@
 import { setCurrentColor, setCurrentSize } from './local-storage';
-import { sendCanvasResetMessage } from './network';
+import { sendCanvasResetMessage, sendEndRound } from './network';
 
 const sizes = { 'circle-sml': 1, 'circle-med': 3, 'circle-lrg': 6, 'circle-xlg': 10 };
 const colors = {
@@ -18,11 +18,13 @@ const colors = {
 export function initDrawingTools() {
   const sizeControlButtons = document.querySelectorAll('.size-controls a.btn-floating');
   const colorControlButtons = document.querySelectorAll('.color-controls a.btn-floating');
-  const resetButton = document.querySelector('.reset-controls a.btn');
+  const resetButton = document.querySelector('.reset-controls #reset-button');
+  const endRoundButton = document.querySelector('.reset-controls #end-round-button');
 
   sizeControlButtons.forEach((btn) => btn.addEventListener('click', onSizeChange));
   colorControlButtons.forEach((btn) => btn.addEventListener('click', onColorChange));
   resetButton.addEventListener('click', onResetClick);
+  endRoundButton.addEventListener('click', sendEndRound);
 }
 
 function onSizeChange(e: MouseEvent) {

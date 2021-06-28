@@ -179,7 +179,15 @@ export function addPromptToDrawing() {
 export function updateTimerInDrawing() {
   const state = getGameState();
   const timerEl = document.querySelector('#screen-game .timer span') as HTMLSpanElement;
-  timerEl.innerText = `${state.timeRemaining}s`;
+  const endRoundBtn = document.getElementById('end-round-button') as HTMLAnchorElement;
+
+  if (state.timeRemaining === -1) {
+    timerEl.innerText = '∞';
+    endRoundBtn.classList.remove('hidden');
+  } else {
+    endRoundBtn.classList.add('hidden');
+    timerEl.innerText = `${state.timeRemaining}s`;
+  }
 }
 
 export function drawUpdatedSettings() {

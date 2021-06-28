@@ -90,7 +90,8 @@
           </div>
         </div>
         <div class="reset-controls">
-          <a class="waves-effect waves-light btn">Reset</a>
+          <a class="waves-effect waves-light btn" id="reset-button">Reset</a>
+          <a style="margin-left: 16px" class="waves-effect waves-light btn hidden" id="end-round-button">End Round</a>
         </div>
       </div>
 
@@ -119,6 +120,7 @@
                       <div class="input-field col s6">
                         <input value="30" id="draw_time" type="number" class="validate" />
                         <label for="draw_time">Drawing time (seconds)</label>
+                        <span class="helper-text">Hint: use -1 for infinite time</span>
                       </div>
                     </div>
                     <div class="row">
