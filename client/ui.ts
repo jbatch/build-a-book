@@ -129,6 +129,10 @@ export function addVotingEventHandlers() {
   const votingEls = document.querySelectorAll('#prompt-voting-list .row');
   votingEls.forEach((el: HTMLDivElement) =>
     el.addEventListener('click', () => {
+      // if a row is highlighted, we've voted already, do nothing
+      const hasVoted = !!document.querySelector('#prompt-voting-list .row .card.lighten-2');
+      if (hasVoted) return;
+
       const userId = el.dataset['userid'];
       if (userId) sendPromptVote(userId);
 
