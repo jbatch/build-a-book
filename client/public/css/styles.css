@@ -111,6 +111,11 @@ body,
   padding: 32px;
 }
 
+#lobby-players-list .row:last-child,
+#prompt-players-list .row:last-child {
+  margin-bottom: 0;
+}
+
 .mt4 {
   margin-top: 32px;
 }
